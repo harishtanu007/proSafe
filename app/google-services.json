@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "880525224715",
+    "firebase_url": "https://prosafe-bf553-default-rtdb.firebaseio.com",
+    "project_id": "prosafe-bf553",
+    "storage_bucket": "prosafe-bf553.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880525224715:android:a09d4a91ebe524dfc9900e",
+        "android_client_info": {
+          "package_name": "com.harish.prosafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "880525224715-5s186c7i2i0p3cve8clrhmgq860ti3p2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYcNCfWsCQpUJCtES1D_RcogmF3bcjtsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "880525224715-5s186c7i2i0p3cve8clrhmgq860ti3p2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
