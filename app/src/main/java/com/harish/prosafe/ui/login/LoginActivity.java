@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // TODO: Implement your own authentication logic here.
         if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
-            backendProvider.loginUser(email, password,this).setLoginListener(new LoginListener() {
+            backendProvider.loginUser(email, password,this).setEventListener(new EventListener() {
                 @Override
                 public void onSuccess() {
                     progressDialog.hide();

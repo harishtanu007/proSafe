@@ -1,16 +1,12 @@
 package com.harish.prosafe.ui.registration;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
@@ -19,32 +15,13 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.harish.prosafe.MainActivity;
 import com.harish.prosafe.R;
-import com.harish.prosafe.data.model.Gender;
-import com.harish.prosafe.data.model.Incident;
-import com.harish.prosafe.data.model.User;
 import com.harish.prosafe.ui.login.LoginActivity;
-import com.harish.prosafe.ui.login.LoginListener;
+import com.harish.prosafe.ui.login.EventListener;
 import com.harish.prosafe.util.FirebaseProvider;
 import com.harish.prosafe.util.Helper;
 import com.harish.prosafe.util.IBackendProvider;
 
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -150,7 +127,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
-        backendProvider.registerUser(firstName, lastName, email, password, mobile,this).setLoginListener(new LoginListener() {
+        backendProvider.registerUser(firstName, lastName, email, password, mobile,this).setEventListener(new EventListener() {
             @Override
             public void onSuccess() {
                 Snackbar.make(rootLayout, "Account Created successfully", Snackbar.LENGTH_LONG).show();

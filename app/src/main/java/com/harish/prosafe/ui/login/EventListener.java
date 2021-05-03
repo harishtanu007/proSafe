@@ -1,6 +1,6 @@
 package com.harish.prosafe.ui.login;
 
-public interface LoginListener {
+public interface EventListener {
     void onSuccess();
     void onFailed();
 }
