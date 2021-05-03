@@ -9,14 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.harish.prosafe.R;
 import com.harish.prosafe.data.model.Incident;
+import com.harish.prosafe.util.FirebaseProvider;
+import com.harish.prosafe.util.IBackendProvider;
 
 public class NewIncidentActivity extends AppCompatActivity {
     EditText incidentTitle,incidentDescription;
     Button shareIncident;
-    DatabaseReference mbase;
+    IBackendProvider backendProvider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +26,8 @@ public class NewIncidentActivity extends AppCompatActivity {
         incidentDescription = findViewById(R.id.incident_description);
         shareIncident = findViewById(R.id.share_incident);
 
-        mbase = FirebaseDatabase.getInstance().getReference("Incidents");
+        backendProvider = FirebaseProvider.getFirebaseProvider();
+
 
         shareIncident.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,9 +38,8 @@ public class NewIncidentActivity extends AppCompatActivity {
                 {
                     Log.e("title : ",title);
                     Log.e("description : ",description);
-                    String incidentId = mbase.push().getKey();
                     Incident incident = new Incident(title,description,"testing");
-                    mbase.child(incidentId).setValue(incident);
+                    backendProvider.addIncident(incident);
                 }
             }
         });

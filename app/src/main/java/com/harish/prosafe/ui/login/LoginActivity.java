@@ -11,21 +11,22 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
 import com.harish.prosafe.MainActivity;
 import com.harish.prosafe.R;
 import com.harish.prosafe.ui.registration.RegistrationActivity;
+import com.harish.prosafe.util.FirebaseProvider;
 import com.harish.prosafe.util.Helper;
+import com.harish.prosafe.util.IBackendProvider;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,10 +35,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private FirebaseAuth mAuth;
-    
+
     private ScrollView rootLayout;
 
-    private DatabaseReference mUserDatabase;
     ProgressDialog progressDialog;
     Helper helper;
 
@@ -51,25 +51,24 @@ public class LoginActivity extends AppCompatActivity {
     TextView _signupLink;
     @BindView(R.id.forgot_password)
     TextView _forgotPassword;
-    private DatabaseReference mDatabase;
-    private ProgressDialog mRegProgress;
-
+    IBackendProvider backendProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        helper = new Helper();
+        helper = Helper.getHelper();
         rootLayout = findViewById(R.id.rootlayout);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        backendProvider = FirebaseProvider.getFirebaseProvider();
 
         if (currentUser == null) {
 
             mAuth = FirebaseAuth.getInstance();
 
             ButterKnife.bind(this);
-            mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
             _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -118,29 +117,23 @@ public class LoginActivity extends AppCompatActivity {
 
         // TODO: Implement your own authentication logic here.
         if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
-            loginUser(email, password);
+            backendProvider.loginUser(email, password,this).setLoginListener(new LoginListener() {
+                @Override
+                public void onSuccess() {
+                    progressDialog.hide();
+                    openMainActivity();
+                }
+
+                @Override
+                public void onFailed() {
+                    progressDialog.hide();
+                    onLoginFailed();
+                }
+            });
         }
 
     }
 
-    private void loginUser(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            progressDialog.hide();
-                            openMainActivity();
-                        } else {
-                            progressDialog.hide();
-                            // If sign in fails, display a message to the user.
-                            // Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            onLoginFailed();
-
-                        }
-                    }
-                });
-    }
 
     private void openMainActivity() {
         Intent uploadIntent = new Intent(getApplicationContext(), MainActivity.class);

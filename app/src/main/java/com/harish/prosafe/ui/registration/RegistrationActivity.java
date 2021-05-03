@@ -38,7 +38,10 @@ import com.harish.prosafe.data.model.Gender;
 import com.harish.prosafe.data.model.Incident;
 import com.harish.prosafe.data.model.User;
 import com.harish.prosafe.ui.login.LoginActivity;
+import com.harish.prosafe.ui.login.LoginListener;
+import com.harish.prosafe.util.FirebaseProvider;
 import com.harish.prosafe.util.Helper;
+import com.harish.prosafe.util.IBackendProvider;
 
 
 import java.util.HashMap;
@@ -65,30 +68,25 @@ public class RegistrationActivity extends AppCompatActivity {
     Button _signupButton;
     @BindView(R.id.link_login)
     TextView _loginLink;
-    private FirebaseAuth mAuth;
-    private Toolbar mToolbar;
+
     private ProgressDialog mRegProgress;
-    private DatabaseReference mDatabase;
-    private DatabaseReference mUserDatabase;
-    private Helper myData;
+    private Helper helper;
     private ScrollView rootLayout;
-    public String token;
-    DatabaseReference mbase;
+    IBackendProvider backendProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
-        myData = new Helper();
+        helper = Helper.getHelper();
         rootLayout = findViewById(R.id.rootlayout);
-        mAuth = FirebaseAuth.getInstance();
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+        backendProvider = FirebaseProvider.getFirebaseProvider();
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (myData.isInternetConnected(getApplicationContext()))
+                if (helper.isInternetConnected(getApplicationContext()))
                     signup();
                 else
                     Snackbar.make(rootLayout, "No Internet Connection!", Snackbar.LENGTH_LONG).show();
@@ -103,77 +101,33 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    private void registerUser(final String firstName, final String lastName, final String email, String password, final String mobile) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            mbase = FirebaseDatabase.getInstance().getReference("Users");
-                            String userId = mbase.push().getKey();
-                            long unixTime = System.currentTimeMillis() / 1000L;
-                            User user = new User(firstName, lastName, mobile, email, mobile, Gender.MALE, unixTime);
-
-                            mbase.child(userId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Snackbar.make(rootLayout, "Account Created successfully", Snackbar.LENGTH_LONG).show();
-                                        onSignupSuccess();
-                                    }
-                                }
-                            });
 
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            mRegProgress.dismiss();
-
-                            try {
-                                throw task.getException();
-                            } catch (FirebaseAuthWeakPasswordException e) {
-                                Snackbar.make(rootLayout, "Password is too weak!", Snackbar.LENGTH_LONG).show();
-                            } catch (FirebaseAuthInvalidCredentialsException e) {
-                                Snackbar.make(rootLayout, "Invalid Credentials!", Snackbar.LENGTH_LONG).show();
-                            } catch (FirebaseAuthUserCollisionException e) {
-                                Snackbar.make(rootLayout, "User with this email already exist!", Snackbar.LENGTH_LONG).show();
-                            } catch (Exception e) {
-                                Log.e(TAG, e.getMessage());
-                                Snackbar.make(rootLayout, "Authentication failed.", Snackbar.LENGTH_LONG).show();
-                            }
-
-                        }
-
-                        // ...
-                    }
-                });
-    }
-
-    private void sendVerificationEmail() {
-        try {
-            final FirebaseUser user = mAuth.getCurrentUser();
-            user.sendEmailVerification()
-                    .addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-                            // Re-enable button
-
-                            if (task.isSuccessful()) {
-                                Snackbar.make(rootLayout, "Verification email sent to " + user.getEmail(), Snackbar.LENGTH_LONG).show();
-                                FirebaseAuth.getInstance().signOut();
-                            } else {
-                                Log.e(TAG, "sendEmailVerification", task.getException());
-                                Snackbar.make(rootLayout, "Failed to send verification email.", Snackbar.LENGTH_LONG).show();
-                                FirebaseAuth.getInstance().signOut();
-                            }
-                        }
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-            login();
-
-        }
-    }
+//    private void sendVerificationEmail() {
+//        try {
+//            final FirebaseUser user = mAuth.getCurrentUser();
+//            user.sendEmailVerification()
+//                    .addOnCompleteListener(new OnCompleteListener() {
+//                        @Override
+//                        public void onComplete(@NonNull Task task) {
+//                            // Re-enable button
+//
+//                            if (task.isSuccessful()) {
+//                                Snackbar.make(rootLayout, "Verification email sent to " + user.getEmail(), Snackbar.LENGTH_LONG).show();
+//                                FirebaseAuth.getInstance().signOut();
+//                            } else {
+//                                Log.e(TAG, "sendEmailVerification", task.getException());
+//                                Snackbar.make(rootLayout, "Failed to send verification email.", Snackbar.LENGTH_LONG).show();
+//                                FirebaseAuth.getInstance().signOut();
+//                            }
+//                        }
+//                    });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            login();
+//
+//        }
+//    }
 
 
     public void signup() {
@@ -196,13 +150,25 @@ public class RegistrationActivity extends AppCompatActivity {
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
-        registerUser(firstName, lastName, email, password, mobile);
+        backendProvider.registerUser(firstName, lastName, email, password, mobile,this).setLoginListener(new LoginListener() {
+            @Override
+            public void onSuccess() {
+                Snackbar.make(rootLayout, "Account Created successfully", Snackbar.LENGTH_LONG).show();
+                mRegProgress.dismiss();
+                onSignupSuccess();
+            }
+
+            @Override
+            public void onFailed() {
+                mRegProgress.dismiss();
+                Snackbar.make(rootLayout, "Account creation failed", Snackbar.LENGTH_LONG).show();
+            }
+        });
 
     }
 
 
     public void onSignupSuccess() {
-        mRegProgress.dismiss();
         Intent uploadIntent = new Intent(getApplicationContext(), LoginActivity.class);
         uploadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(uploadIntent);
