@@ -61,24 +61,27 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
         listData = new ArrayList<>();
-        final DatabaseReference nm = FirebaseDatabase.getInstance().getReference("Incidents");
-        nm.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference nm = FirebaseDatabase.getInstance().getReference("Incidents");
+        nm.keepSynced(true);
+
+        nm.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot npsnapshot : dataSnapshot.getChildren()) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listData.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot npsnapshot : snapshot.getChildren()) {
                         Incident l = npsnapshot.getValue(Incident.class);
                         listData.add(l);
                     }
                     adapter = new IncidentFirebaseAdapter(listData);
                     recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                databaseError.toException().printStackTrace();
+            public void onCancelled(@NonNull DatabaseError error) {
+                throw error.toException();
             }
         });
 
@@ -91,7 +94,7 @@ public class HomeFragment extends Fragment {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
+        if (currentUser == null) {
             openLoginPage();
         }
     }
@@ -100,6 +103,7 @@ public class HomeFragment extends Fragment {
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivityForResult(intent, LOGIN_ACTIVITY_REQUEST_CODE);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
