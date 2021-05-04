@@ -43,7 +43,7 @@ public class NewIncidentActivity extends AppCompatActivity {
                 {
                     Log.e("title : ",title);
                     Log.e("description : ",description);
-                    String user = backendProvider.getUser();
+                    String user = backendProvider.getUserName();
                     Incident incident = new Incident(title,description,user);
                     backendProvider.addIncident(incident).setEventListener(new EventListener() {
                         @Override
@@ -51,7 +51,6 @@ public class NewIncidentActivity extends AppCompatActivity {
                             Snackbar.make(rootLayout, "Incident Shared Successfully", Snackbar.LENGTH_LONG).show();
                             finish();
                         }
-
                         @Override
                         public void onFailed() {
                             Snackbar.make(rootLayout, "Something went wrong!", Snackbar.LENGTH_LONG).show();

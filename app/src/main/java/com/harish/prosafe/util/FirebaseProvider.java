@@ -8,6 +8,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.harish.prosafe.data.model.Gender;
@@ -38,8 +40,12 @@ public class FirebaseProvider implements IBackendProvider {
         this.listener = null;
     }
 
+    public FirebaseUser getCurrentUser() {
+        return mAuth.getCurrentUser();
+    }
+
     @Override
-    public String getUser() {
+    public String getUserName() {
         String userName = mAuth.getCurrentUser().getDisplayName();
         return userName;
     }
@@ -109,25 +115,40 @@ public class FirebaseProvider implements IBackendProvider {
                         if (task.isSuccessful()) {
                             DatabaseReference userDatabaseReference;
                             userDatabaseReference = getUserDatabase();
-                            String userId = userDatabaseReference.push().getKey();
+                            String userId = getCurrentUser().getUid();
                             long unixTime = System.currentTimeMillis() / 1000L;
                             User user = new User(firstName, lastName, mobile, email, mobile, Gender.MALE, unixTime);
+                            FirebaseUser currentUser = getCurrentUser();
 
-                            userDatabaseReference.child(userId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        if (listener != null)
-                                            listener.onSuccess();
-                                        else {
-                                            Log.e(TAG, "Listener error");
-                                            listener.onFailed();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(firstName+" "+lastName).build();
+
+                            currentUser.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "User profile updated.");
+                                                userDatabaseReference.child(userId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            if (listener != null)
+                                                                listener.onSuccess();
+                                                            else {
+                                                                Log.e(TAG, "Listener error");
+                                                                listener.onFailed();
+                                                            }
+                                                        } else {
+                                                            listener.onFailed();
+                                                        }
+                                                    }
+                                                });
+                                            }else{
+                                                listener.onFailed();
+                                            }
                                         }
-                                    } else {
-                                        listener.onFailed();
-                                    }
-                                }
-                            });
+                                    });
                         } else {
                             listener.onFailed();
                         }

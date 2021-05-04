@@ -98,8 +98,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void sendToMain() {
-        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(mainIntent);
+//        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+//        startActivity(mainIntent);
         finish();
     }
 
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess() {
                     progressDialog.hide();
-                    openMainActivity();
+                    sendToMain();
                 }
 
                 @Override
