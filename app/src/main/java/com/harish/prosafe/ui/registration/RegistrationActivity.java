@@ -58,24 +58,9 @@ public class RegistrationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         helper = Helper.getHelper();
         rootLayout = findViewById(R.id.rootlayout);
-        backendProvider = FirebaseProvider.getFirebaseProvider();
-
-        _signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (helper.isInternetConnected(getApplicationContext()))
-                    signup();
-                else
-                    Snackbar.make(rootLayout, "No Internet Connection!", Snackbar.LENGTH_LONG).show();
-            }
-        });
-
-        _loginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+        backendProvider = IBackendProvider.getBackendProvider();
+        _signupButton.setOnClickListener(v->signup());
+        _loginLink.setOnClickListener(v -> login());
     }
 
 

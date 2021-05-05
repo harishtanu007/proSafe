@@ -10,19 +10,36 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.harish.prosafe.data.adapters.IncidentAdapter;
+import com.harish.prosafe.data.adapters.IncidentCategoryAdapter;
+import com.harish.prosafe.data.adapters.IncidentCategoryValueChangeListener;
+import com.harish.prosafe.data.adapters.IncidentValueChangeListener;
 import com.harish.prosafe.data.model.Gender;
 import com.harish.prosafe.data.model.Incident;
+import com.harish.prosafe.data.model.IncidentCategory;
 import com.harish.prosafe.data.model.User;
 import com.harish.prosafe.ui.login.LoginActivity;
 import com.harish.prosafe.ui.login.EventListener;
 import com.harish.prosafe.ui.registration.RegistrationActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FirebaseProvider implements IBackendProvider {
     DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private EventListener listener;
+    private IncidentValueChangeListener incidentValueChangeListener;
+    private IncidentCategoryValueChangeListener incidentCategoryValueChangeListener;
+    private List<Incident> incidentListData;
+    private List<IncidentCategory> CategoryListData;
+    IncidentCategoryAdapter incidentCategoryAdapter;
+    IncidentAdapter incidentAdapter;
 
     static FirebaseProvider firebaseProvider;
 
@@ -37,6 +54,8 @@ public class FirebaseProvider implements IBackendProvider {
     private FirebaseProvider() {
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        incidentListData = new ArrayList<>();
+        CategoryListData = new ArrayList<>();
         this.listener = null;
     }
 
@@ -55,6 +74,7 @@ public class FirebaseProvider implements IBackendProvider {
         this.listener = listener;
     }
 
+
     public DatabaseReference getUserDatabase() {
         return databaseReference.child("Users");
     }
@@ -62,6 +82,11 @@ public class FirebaseProvider implements IBackendProvider {
     public DatabaseReference getIncidentDatabase() {
         return databaseReference.child("Incidents");
     }
+    public DatabaseReference getCategoriesDatabase() {
+        return databaseReference.child("IncidentCategories");
+    }
+
+
     @Override
     public FirebaseProvider addIncident(Incident incident) {
         DatabaseReference incidentDatabaseReference;
@@ -121,7 +146,7 @@ public class FirebaseProvider implements IBackendProvider {
                             FirebaseUser currentUser = getCurrentUser();
 
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(firstName+" "+lastName).build();
+                                    .setDisplayName(firstName + " " + lastName).build();
 
                             currentUser.updateProfile(profileUpdates)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -144,7 +169,7 @@ public class FirebaseProvider implements IBackendProvider {
                                                         }
                                                     }
                                                 });
-                                            }else{
+                                            } else {
                                                 listener.onFailed();
                                             }
                                         }
@@ -154,6 +179,58 @@ public class FirebaseProvider implements IBackendProvider {
                         }
                     }
                 });
+        return getFirebaseProvider();
+    }
+
+    @Override
+    public FirebaseProvider addIncidentValueEventListener(IncidentValueChangeListener valueChangeListener) {
+        this.incidentValueChangeListener = valueChangeListener;
+        getIncidentDatabase().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                incidentListData.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot npsnapshot : snapshot.getChildren()) {
+                        Incident l = npsnapshot.getValue(Incident.class);
+                        incidentListData.add(l);
+                    }
+                    incidentAdapter = new IncidentAdapter(incidentListData);
+                    valueChangeListener.onSuccess(incidentAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                valueChangeListener.onFailed();
+            }
+        });
+
+        return getFirebaseProvider();
+    }
+
+    @Override
+    public FirebaseProvider addCategoryValueEventListener(IncidentCategoryValueChangeListener valueChangeListener) {
+        this.incidentCategoryValueChangeListener = valueChangeListener;
+        getCategoriesDatabase().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                CategoryListData.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot npsnapshot : snapshot.getChildren()) {
+                        IncidentCategory category = npsnapshot.getValue(IncidentCategory.class);
+                        CategoryListData.add(category);
+                    }
+                    incidentCategoryAdapter = new IncidentCategoryAdapter(CategoryListData);
+                    valueChangeListener.onSuccess(incidentCategoryAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                valueChangeListener.onFailed();
+            }
+        });
+
         return getFirebaseProvider();
     }
 

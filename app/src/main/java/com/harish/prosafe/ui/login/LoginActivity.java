@@ -31,6 +31,8 @@ import com.harish.prosafe.util.IBackendProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.harish.prosafe.util.FirebaseProvider.getFirebaseProvider;
+
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
@@ -62,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        backendProvider = FirebaseProvider.getFirebaseProvider();
+        backendProvider = IBackendProvider.getBackendProvider();
 
         if (currentUser == null) {
 
@@ -70,36 +72,20 @@ public class LoginActivity extends AppCompatActivity {
 
             ButterKnife.bind(this);
 
-            _loginButton.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
+            _loginButton.setOnClickListener(v-> {
                     if (helper.isInternetConnected(getApplicationContext())) {
                         login();
                     } else {
                         Snackbar.make(rootLayout, "No Internet Connection!", Snackbar.LENGTH_LONG).show();
-
                     }
-                }
-            });
-
-            _signupLink.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                    startActivityForResult(intent, REQUEST_SIGNUP);
-                }
-            });
+                });
+            _signupLink.setOnClickListener(v ->   startActivityForResult(new Intent(getApplicationContext(), RegistrationActivity.class), REQUEST_SIGNUP));
         } else {
             sendToMain();
         }
     }
 
     private void sendToMain() {
-//        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-//        startActivity(mainIntent);
         finish();
     }
 
@@ -134,13 +120,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-    private void openMainActivity() {
-        Intent uploadIntent = new Intent(getApplicationContext(), MainActivity.class);
-        uploadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(uploadIntent);
-        finish();
-    }
 
     public void onLoginFailed() {
         Snackbar.make(rootLayout, "Login failed", Snackbar.LENGTH_LONG).show();

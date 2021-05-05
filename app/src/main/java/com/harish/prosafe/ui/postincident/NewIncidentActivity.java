@@ -18,10 +18,11 @@ import com.harish.prosafe.util.FirebaseProvider;
 import com.harish.prosafe.util.IBackendProvider;
 
 public class NewIncidentActivity extends AppCompatActivity {
-    EditText incidentTitle,incidentDescription;
+    EditText incidentTitle, incidentDescription;
     Button shareIncident;
     IBackendProvider backendProvider;
     ConstraintLayout rootLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,33 +31,26 @@ public class NewIncidentActivity extends AppCompatActivity {
         incidentDescription = findViewById(R.id.incident_description);
         shareIncident = findViewById(R.id.share_incident);
         rootLayout = findViewById(R.id.rootlayout);
-
-        backendProvider = FirebaseProvider.getFirebaseProvider();
-
-
-        shareIncident.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = incidentTitle.getText().toString().trim();
-                String description = incidentDescription.getText().toString().trim();
-                if(!title.isEmpty() && !description.isEmpty())
-                {
-                    Log.e("title : ",title);
-                    Log.e("description : ",description);
-                    String user = backendProvider.getUserName();
-                    Incident incident = new Incident(title,description,user);
-                    backendProvider.addIncident(incident).setEventListener(new EventListener() {
-                        @Override
-                        public void onSuccess() {
-                            Snackbar.make(rootLayout, "Incident Shared Successfully", Snackbar.LENGTH_LONG).show();
-                            finish();
-                        }
-                        @Override
-                        public void onFailed() {
-                            Snackbar.make(rootLayout, "Something went wrong!", Snackbar.LENGTH_LONG).show();
-                        }
-                    });
-                }
+        backendProvider = IBackendProvider.getBackendProvider();
+        shareIncident.setOnClickListener(v -> {
+            String title = incidentTitle.getText().toString().trim();
+            String description = incidentDescription.getText().toString().trim();
+            if (!title.isEmpty() && !description.isEmpty()) {
+                Log.e("title : ", title);
+                Log.e("description : ", description);
+                String user = backendProvider.getUserName();
+                Incident incident = new Incident(title, description, user);
+                backendProvider.addIncident(incident).setEventListener(new EventListener() {
+                    @Override
+                    public void onSuccess() {
+                        Snackbar.make(rootLayout, "Incident Shared Successfully", Snackbar.LENGTH_LONG).show();
+                        finish();
+                    }
+                    @Override
+                    public void onFailed() {
+                        Snackbar.make(rootLayout, "Something went wrong!", Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }
