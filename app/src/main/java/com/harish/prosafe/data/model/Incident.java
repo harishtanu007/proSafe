@@ -4,14 +4,16 @@ public class Incident {
     private String title;
     private String description;
     private String postedBy;
+    private String incidentCategory;
 
     public Incident() {
     }
 
-    public Incident(String title, String description, String postedBy) {
+    public Incident(String title, String description, String postedBy, String incidentCategory) {
         this.title = title;
         this.description = description;
         this.postedBy = postedBy;
+        this.incidentCategory = incidentCategory;
     }
 
     public String getTitle() {
@@ -36,5 +38,13 @@ public class Incident {
 
     public void setPostedBy(String postedBy) {
         this.postedBy = postedBy;
+    }
+
+    public String getIncidentCategory() {
+        return incidentCategory;
+    }
+
+    public void setIncidentCategory(String incidentCategory) {
+        this.incidentCategory = incidentCategory;
     }
 }

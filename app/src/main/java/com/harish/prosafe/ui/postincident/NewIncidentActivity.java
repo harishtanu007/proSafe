@@ -32,6 +32,7 @@ public class NewIncidentActivity extends AppCompatActivity {
         shareIncident = findViewById(R.id.share_incident);
         rootLayout = findViewById(R.id.rootlayout);
         backendProvider = IBackendProvider.getBackendProvider();
+        String incidentCategory = getIntent().getStringExtra("INCIDENT_CATEGORY");
         shareIncident.setOnClickListener(v -> {
             String title = incidentTitle.getText().toString().trim();
             String description = incidentDescription.getText().toString().trim();
@@ -39,7 +40,7 @@ public class NewIncidentActivity extends AppCompatActivity {
                 Log.e("title : ", title);
                 Log.e("description : ", description);
                 String user = backendProvider.getUserName();
-                Incident incident = new Incident(title, description, user);
+                Incident incident = new Incident(title, description, user,incidentCategory);
                 backendProvider.addIncident(incident).setEventListener(new EventListener() {
                     @Override
                     public void onSuccess() {
