@@ -5,15 +5,17 @@ public class Incident {
     private String description;
     private String postedBy;
     private String incidentCategory;
+    private long postTime;
 
     public Incident() {
     }
 
-    public Incident(String title, String description, String postedBy, String incidentCategory) {
+    public Incident(String title, String description, String postedBy, String incidentCategory, long postTime) {
         this.title = title;
         this.description = description;
         this.postedBy = postedBy;
         this.incidentCategory = incidentCategory;
+        this.postTime = postTime;
     }
 
     public String getTitle() {
@@ -46,5 +48,13 @@ public class Incident {
 
     public void setIncidentCategory(String incidentCategory) {
         this.incidentCategory = incidentCategory;
+    }
+
+    public long getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(long postTime) {
+        this.postTime = postTime;
     }
 }

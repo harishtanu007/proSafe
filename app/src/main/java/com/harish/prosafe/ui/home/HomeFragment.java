@@ -21,8 +21,6 @@ import com.harish.prosafe.util.IBackendProvider;
 import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
-
-    private HomeViewModel homeViewModel;
     RecyclerView recyclerView;
     IBackendProvider backendProvider;
 
@@ -31,7 +29,6 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         backendProvider = IBackendProvider.getBackendProvider();

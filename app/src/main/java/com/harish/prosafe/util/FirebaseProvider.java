@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -34,8 +33,6 @@ public class FirebaseProvider implements IBackendProvider {
     DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private EventListener listener;
-    private IncidentValueChangeListener incidentValueChangeListener;
-    private IncidentCategoryValueChangeListener incidentCategoryValueChangeListener;
     private List<Incident> incidentListData;
     private List<IncidentCategory> CategoryListData;
     IncidentCategoryAdapter incidentCategoryAdapter;
@@ -65,8 +62,7 @@ public class FirebaseProvider implements IBackendProvider {
 
     @Override
     public String getUserName() {
-        String userName = mAuth.getCurrentUser().getDisplayName();
-        return userName;
+        return mAuth.getCurrentUser().getDisplayName();
     }
 
     // Assign the listener implementing events interface that will receive the events
@@ -92,9 +88,7 @@ public class FirebaseProvider implements IBackendProvider {
         DatabaseReference incidentDatabaseReference;
         incidentDatabaseReference = getIncidentDatabase();
         String incidentId = incidentDatabaseReference.push().getKey();
-        incidentDatabaseReference.child(incidentId).setValue(incident).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
+        incidentDatabaseReference.child(incidentId).setValue(incident).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     if (listener != null)
                         listener.onSuccess();
@@ -105,7 +99,6 @@ public class FirebaseProvider implements IBackendProvider {
                 } else {
                     listener.onFailed();
                 }
-            }
         });
         return getFirebaseProvider();
     }
@@ -113,9 +106,7 @@ public class FirebaseProvider implements IBackendProvider {
     @Override
     public FirebaseProvider loginUser(String email, String password, LoginActivity loginActivity) {
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(loginActivity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                .addOnCompleteListener(loginActivity, task ->{
                         if (task.isSuccessful()) {
                             if (listener != null)
                                 listener.onSuccess();
@@ -126,7 +117,6 @@ public class FirebaseProvider implements IBackendProvider {
                         } else {
                             listener.onFailed();
                         }
-                    }
                 });
         return getFirebaseProvider();
     }
@@ -134,9 +124,7 @@ public class FirebaseProvider implements IBackendProvider {
     @Override
     public FirebaseProvider registerUser(final String firstName, final String lastName, final String email, String password, final String mobile, RegistrationActivity registrationActivity) {
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(registrationActivity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                .addOnCompleteListener(registrationActivity, task ->{
                         if (task.isSuccessful()) {
                             DatabaseReference userDatabaseReference;
                             userDatabaseReference = getUserDatabase();
@@ -177,14 +165,12 @@ public class FirebaseProvider implements IBackendProvider {
                         } else {
                             listener.onFailed();
                         }
-                    }
                 });
         return getFirebaseProvider();
     }
 
     @Override
     public FirebaseProvider addIncidentValueEventListener(IncidentValueChangeListener valueChangeListener) {
-        this.incidentValueChangeListener = valueChangeListener;
         getIncidentDatabase().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -210,7 +196,6 @@ public class FirebaseProvider implements IBackendProvider {
 
     @Override
     public FirebaseProvider addCategoryValueEventListener(IncidentCategoryValueChangeListener valueChangeListener) {
-        this.incidentCategoryValueChangeListener = valueChangeListener;
         getCategoriesDatabase().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.harish.prosafe.R;
-import com.harish.prosafe.data.adapters.IncidentAdapter;
 import com.harish.prosafe.data.adapters.IncidentCategoryAdapter;
 import com.harish.prosafe.data.adapters.IncidentCategoryValueChangeListener;
 import com.harish.prosafe.util.IBackendProvider;
