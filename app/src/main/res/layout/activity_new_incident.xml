@@ -38,7 +38,40 @@
             android:inputType="textMultiLine"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />
+        <LinearLayout
+            android:id="@+id/location_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
+                <TextView
+                    android:id="@+id/location_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Incident Location"
+                    android:padding="10dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="address"
+                    android:padding="10dp"
+                    android:textSize="16sp"
+                     />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_baseline_navigate_next_24" />
+        </LinearLayout>
         <Button
             android:id="@+id/share_incident"
             android:layout_width="match_parent"
@@ -49,7 +82,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/incident_description"
+            app:layout_constraintTop_toBottomOf="@+id/location_view"
             app:layout_constraintVertical_bias="0.0" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

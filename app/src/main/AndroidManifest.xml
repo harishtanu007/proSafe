@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProSafe">
-        <activity android:name=".ui.incidentdetails.IncidentDetailsActivity"></activity>
+        <activity android:name=".ui.location.LocationActivity"></activity>
+        <activity android:name=".ui.incidentdetails.IncidentDetailsActivity" />
         <activity android:name=".ui.incidentcategory.IncidentCategoryActivity" />
         <activity android:name=".ui.registration.RegistrationActivity" />
         <activity android:name=".ui.postincident.NewIncidentActivity" />

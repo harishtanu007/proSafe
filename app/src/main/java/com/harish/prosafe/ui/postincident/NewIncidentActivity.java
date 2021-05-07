@@ -6,13 +6,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.harish.prosafe.MainActivity;
 import com.harish.prosafe.R;
 import com.harish.prosafe.data.model.Incident;
+import com.harish.prosafe.ui.location.LocationActivity;
 import com.harish.prosafe.ui.login.EventListener;
 import com.harish.prosafe.util.IBackendProvider;
 
@@ -21,6 +24,7 @@ public class NewIncidentActivity extends AppCompatActivity {
     Button shareIncident;
     IBackendProvider backendProvider;
     ConstraintLayout rootLayout;
+    LinearLayout locationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,7 @@ public class NewIncidentActivity extends AppCompatActivity {
         incidentDescription = findViewById(R.id.incident_description);
         shareIncident = findViewById(R.id.share_incident);
         rootLayout = findViewById(R.id.rootlayout);
+        locationView = findViewById(R.id.location_view);
         backendProvider = IBackendProvider.getBackendProvider();
         String incidentCategory = getIntent().getStringExtra("INCIDENT_CATEGORY");
         shareIncident.setOnClickListener(v -> {
@@ -53,6 +58,9 @@ public class NewIncidentActivity extends AppCompatActivity {
                     }
                 });
             }
+        });
+        locationView.setOnClickListener(v-> {
+                startActivity(new Intent(getApplicationContext(), LocationActivity.class));
         });
     }
 }

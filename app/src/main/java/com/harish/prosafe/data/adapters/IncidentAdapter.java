@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,7 +86,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title, description, postedBy, time, category;
         private CardView incidentView;
-        private ImageButton options;
+        private ImageView options;
 
         public ViewHolder(View itemView) {
             super(itemView);
