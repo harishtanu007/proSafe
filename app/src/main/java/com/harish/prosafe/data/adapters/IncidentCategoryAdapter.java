@@ -44,7 +44,6 @@ public class IncidentCategoryAdapter extends RecyclerView.Adapter<IncidentCatego
         holder.description.setText(ld.getDescription());
         holder.incidentCategoryView.setOnClickListener(v -> {
             IncidentCategory item = listData.get(position);
-            Toast.makeText(v.getContext(), item.getName(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(v.getContext(), NewIncidentActivity.class);
             intent.putExtra("INCIDENT_CATEGORY",item.getName());
             context.startActivity(intent);

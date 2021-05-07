@@ -39,29 +39,12 @@
             app:layout_constraintBottom_toTopOf="@+id/description"
             app:layout_constraintTop_toBottomOf="@id/posted_by" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="7dp"
-            android:layout_marginLeft="7dp"
-            android:src="@drawable/ic_menu"
-            app:layout_constraintBottom_toTopOf="@+id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/incident_category"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.428" />
-
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:ellipsize="end"
-            android:lines="2"
-            android:singleLine="false"
             android:text="Description"
             app:layout_constraintBottom_toTopOf="@id/time"
             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -70,16 +53,12 @@
             android:id="@+id/posted_by"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:text="user name"
-            android:textColor="@color/black"
             android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/title"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
