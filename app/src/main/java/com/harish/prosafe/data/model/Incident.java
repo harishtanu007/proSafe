@@ -1,6 +1,10 @@
 package com.harish.prosafe.data.model;
 
-public class Incident {
+import android.os.Parcel;
+
+import java.io.Serializable;
+
+public class Incident implements Serializable {
     private String title;
     private String description;
     private String postedBy;
@@ -17,6 +21,8 @@ public class Incident {
         this.incidentCategory = incidentCategory;
         this.postTime = postTime;
     }
+
+
 
     public String getTitle() {
         return title;
@@ -57,4 +63,5 @@ public class Incident {
     public void setPostTime(long postTime) {
         this.postTime = postTime;
     }
+
 }

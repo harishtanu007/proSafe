@@ -3,25 +3,33 @@ package com.harish.prosafe.ui.incidentdetails;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.harish.prosafe.R;
+import com.harish.prosafe.data.model.Incident;
+import com.harish.prosafe.util.Constants;
 import com.harish.prosafe.util.Helper;
 
 public class IncidentDetailsActivity extends AppCompatActivity {
 
     private TextView title, description, postedBy, time, category;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String incidentCategory = "", incidentPostedBy = "", incidentDescription = "", incidentTitle = "";
+        long incidentTime = 0;
         setContentView(R.layout.activity_incident_details);
-        String incidentCategory = getIntent().getStringExtra("INCIDENT_CATEGORY");
-        String incidentPostedBy = getIntent().getStringExtra("INCIDENT_POSTED_BY");
-        String incidentDescription = getIntent().getStringExtra("INCIDENT_DESCRIPTION");
-        String incidentTitle = getIntent().getStringExtra("INCIDENT_TITLE");
-        long incidentTime = getIntent().getLongExtra("INCIDENT_TIME",0);
+        Incident incident = (Incident) getIntent().getSerializableExtra(Constants.INCIDENT_DATA_EXTRA);
+        incidentCategory = incident.getIncidentCategory();
+        incidentPostedBy = incident.getPostedBy();
+        incidentDescription = incident.getDescription();
+        incidentTitle = incident.getTitle();
+        incidentTime = incident.getPostTime();
 
         title = findViewById(R.id.title);
         description = findViewById(R.id.description);

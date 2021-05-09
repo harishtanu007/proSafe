@@ -22,6 +22,7 @@ import com.harish.prosafe.data.model.Incident;
 import com.harish.prosafe.data.model.IncidentCategory;
 import com.harish.prosafe.ui.incidentdetails.IncidentDetailsActivity;
 import com.harish.prosafe.ui.postincident.NewIncidentActivity;
+import com.harish.prosafe.util.Constants;
 import com.harish.prosafe.util.Helper;
 
 import java.io.Serializable;
@@ -54,13 +55,9 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
         holder.category.setText(ld.getIncidentCategory());
         holder.time.setText(Helper.getTimeAgo(ld.getPostTime()));
         holder.incidentView.setOnClickListener(v -> {
-            Incident item = listData.get(position);
+            Incident incident = listData.get(position);
             Intent intent = new Intent(v.getContext(), IncidentDetailsActivity.class);
-            intent.putExtra("INCIDENT_CATEGORY",item.getIncidentCategory());
-            intent.putExtra("INCIDENT_POSTED_BY",item.getPostedBy());
-            intent.putExtra("INCIDENT_DESCRIPTION",item.getDescription());
-            intent.putExtra("INCIDENT_TITLE",item.getTitle());
-            intent.putExtra("INCIDENT_TIME",item.getPostTime());
+            intent.putExtra(Constants.INCIDENT_DATA_EXTRA, incident);
             context.startActivity(intent);
         });
         holder.options.setOnClickListener(new View.OnClickListener() {

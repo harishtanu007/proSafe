@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -50,7 +51,6 @@ public class LocationActivity extends AppCompatActivity {
         useCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 getCurrentLocation();
             }
         });
@@ -80,7 +80,7 @@ public class LocationActivity extends AppCompatActivity {
                                 location.setLatitude(latitude);
                                 location.setLongitude(longitude);
                                 fetchAddressfromLatLong(location);
-                            }else {
+                            } else {
 
                             }
 
@@ -101,10 +101,10 @@ public class LocationActivity extends AppCompatActivity {
         }
     }
 
-    private void fetchAddressfromLatLong(Location location){
-        Intent intent = new Intent(this,FetchAddressService.class);
-        intent.putExtra(Constants.RECEIVER,resultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA,location);
+    private void fetchAddressfromLatLong(Location location) {
+        Intent intent = new Intent(this, FetchAddressService.class);
+        intent.putExtra(Constants.RECEIVER, resultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
         startService(intent);
     }
 
@@ -118,7 +118,12 @@ public class LocationActivity extends AppCompatActivity {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             super.onReceiveResult(resultCode, resultData);
             if (resultCode == Constants.RESULT_SUCCESS) {
-                Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
+                String address = resultData.getString(Constants.RESULT_DATA_KEY);
+                Toast.makeText(getApplicationContext(),address , Toast.LENGTH_SHORT).show();
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(Constants.LOCATION_ADDRESS,address);
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
             }
