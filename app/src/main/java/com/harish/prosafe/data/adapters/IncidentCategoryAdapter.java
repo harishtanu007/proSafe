@@ -7,16 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.harish.prosafe.R;
-import com.harish.prosafe.data.model.Incident;
 import com.harish.prosafe.data.model.IncidentCategory;
-import com.harish.prosafe.ui.postincident.NewIncidentActivity;
+import com.harish.prosafe.ui.newincident.NewIncidentActivity;
 
 import java.util.List;
 

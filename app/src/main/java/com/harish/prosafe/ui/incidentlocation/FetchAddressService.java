@@ -1,4 +1,4 @@
-package com.harish.prosafe.ui.location;
+package com.harish.prosafe.ui.incidentlocation;
 
 import android.app.IntentService;
 import android.content.Intent;

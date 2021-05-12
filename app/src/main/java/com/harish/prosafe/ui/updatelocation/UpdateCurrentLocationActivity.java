@@ -1,15 +1,12 @@
-package com.harish.prosafe.ui.location;
+package com.harish.prosafe.ui.updatelocation;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -18,11 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
-import android.provider.Settings;
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationCallback;
@@ -30,31 +23,29 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.harish.prosafe.R;
+import com.harish.prosafe.data.model.Coordinates;
+import com.harish.prosafe.ui.incidentlocation.FetchAddressService;
+import com.harish.prosafe.ui.incidentlocation.LocationActivity;
+import com.harish.prosafe.ui.login.EventListener;
 import com.harish.prosafe.util.Constants;
+import com.harish.prosafe.util.IBackendProvider;
 
-public class LocationActivity extends AppCompatActivity {
+public class UpdateCurrentLocationActivity extends AppCompatActivity {
     LinearLayout useCurrentLocation;
     private static final int REQUEST_LOCATION = 1;
-    Button btnGetLocation;
-    TextView showLocation;
     LocationManager locationManager;
-    String latitude, longitude;
     private ResultReceiver resultReceiver;
-
+    double latitude, longitude;
+    IBackendProvider backendProvider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
+        setContentView(R.layout.activity_update_current_location);
         useCurrentLocation = findViewById(R.id.use_current_location);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        resultReceiver = new AddressResultReceiver(new Handler());
-        useCurrentLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getCurrentLocation();
-            }
-        });
-
+       resultReceiver = new AddressResultReceiver(new Handler());
+        useCurrentLocation.setOnClickListener(v -> getCurrentLocation());
+        backendProvider=IBackendProvider.getBackendProvider();
     }
 
     private void getCurrentLocation() {
@@ -63,9 +54,9 @@ public class LocationActivity extends AppCompatActivity {
         locationRequest.setFastestInterval(3000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(LocationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+            ActivityCompat.requestPermissions(UpdateCurrentLocationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
-            LocationServices.getFusedLocationProviderClient(LocationActivity.this)
+            LocationServices.getFusedLocationProviderClient(UpdateCurrentLocationActivity.this)
                     .requestLocationUpdates(locationRequest, new LocationCallback() {
                         @Override
                         public void onLocationResult(LocationResult locationResult) {
@@ -73,8 +64,8 @@ public class LocationActivity extends AppCompatActivity {
                             LocationServices.getFusedLocationProviderClient(getApplicationContext()).removeLocationUpdates(this);
                             if (locationResult != null && locationResult.getLocations().size() > 0) {
                                 int latestLocationIndex = locationResult.getLocations().size() - 1;
-                                double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
-                                double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
+                                latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                                longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
                                 Toast.makeText(getApplicationContext(), "Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude, Toast.LENGTH_SHORT).show();
                                 Location location = new Location("providerNA");
                                 location.setLatitude(latitude);
@@ -108,7 +99,7 @@ public class LocationActivity extends AppCompatActivity {
         startService(intent);
     }
 
-    private class AddressResultReceiver extends ResultReceiver {
+    public class AddressResultReceiver extends ResultReceiver {
 
         AddressResultReceiver(Handler handler) {
             super(handler);
@@ -118,12 +109,20 @@ public class LocationActivity extends AppCompatActivity {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             super.onReceiveResult(resultCode, resultData);
             if (resultCode == Constants.RESULT_SUCCESS) {
-                String address = resultData.getString(Constants.RESULT_DATA_KEY);
-                Toast.makeText(getApplicationContext(),address , Toast.LENGTH_SHORT).show();
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(Constants.LOCATION_ADDRESS,address);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                //String address = resultData.getString(Constants.RESULT_DATA_KEY);
+
+                backendProvider.addAddressValueEventListener(new Coordinates(latitude,longitude)).setEventListener(new EventListener() {
+                    @Override
+                    public void onSuccess() {
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        Toast.makeText(getApplicationContext(), "Error while adding the location", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             } else {
                 Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
             }

@@ -1,4 +1,4 @@
-package com.harish.prosafe.ui.postincident;
+package com.harish.prosafe.ui.newincident;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -7,20 +7,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.harish.prosafe.MainActivity;
 import com.harish.prosafe.R;
+import com.harish.prosafe.data.model.Coordinates;
 import com.harish.prosafe.data.model.Incident;
-import com.harish.prosafe.ui.location.LocationActivity;
+import com.harish.prosafe.ui.incidentlocation.LocationActivity;
 import com.harish.prosafe.ui.login.EventListener;
-import com.harish.prosafe.util.Constants;
 import com.harish.prosafe.util.IBackendProvider;
+
+import static com.harish.prosafe.util.Constants.*;
 
 public class NewIncidentActivity extends AppCompatActivity {
     EditText incidentTitle, incidentDescription;
@@ -29,6 +29,8 @@ public class NewIncidentActivity extends AppCompatActivity {
     ConstraintLayout rootLayout;
     LinearLayout locationView;
     TextView location;
+    double latitude,longitude;
+    String address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class NewIncidentActivity extends AppCompatActivity {
                 Log.e("description : ", description);
                 String user = backendProvider.getUserName();
                 long unixTime = System.currentTimeMillis() / 1000L;
-                Incident incident = new Incident(title, description, user,incidentCategory,unixTime);
+                Incident incident = new Incident(title, description, user,incidentCategory,unixTime,address,new Coordinates(latitude,longitude));
                 backendProvider.addIncident(incident).setEventListener(new EventListener() {
                     @Override
                     public void onSuccess() {
@@ -63,22 +65,23 @@ public class NewIncidentActivity extends AppCompatActivity {
                 });
             }
         });
-        locationView.setOnClickListener(v-> {
-                startActivityForResult(new Intent(getApplicationContext(), LocationActivity.class), Constants.LOCATION_ACTIVITY);
-        });
+        locationView.setOnClickListener(v-> startActivityForResult(new Intent(getApplicationContext(), LocationActivity.class), LOCATION_ACTIVITY));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Constants.LOCATION_ACTIVITY) {
+        if (requestCode == LOCATION_ACTIVITY) {
             if(resultCode == Activity.RESULT_OK){
-                String address=data.getStringExtra(Constants.LOCATION_ADDRESS);
+                address=data.getStringExtra(LOCATION_ADDRESS);
+                latitude=data.getDoubleExtra(LOCATION_LATITUDE,0);
+                longitude=data.getDoubleExtra(LOCATION_LONGITUDE,0);
                 location.setText(address);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
+
             }
         }
     }

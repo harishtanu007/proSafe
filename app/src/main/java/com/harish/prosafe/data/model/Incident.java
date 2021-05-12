@@ -10,19 +10,21 @@ public class Incident implements Serializable {
     private String postedBy;
     private String incidentCategory;
     private long postTime;
+    private String address;
+    private Coordinates coordinates;
 
     public Incident() {
     }
 
-    public Incident(String title, String description, String postedBy, String incidentCategory, long postTime) {
+    public Incident(String title, String description, String postedBy, String incidentCategory, long postTime, String address, Coordinates coordinates) {
         this.title = title;
         this.description = description;
         this.postedBy = postedBy;
         this.incidentCategory = incidentCategory;
         this.postTime = postTime;
+        this.address = address;
+        this.coordinates = coordinates;
     }
-
-
 
     public String getTitle() {
         return title;
@@ -64,4 +66,19 @@ public class Incident implements Serializable {
         this.postTime = postTime;
     }
 
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }

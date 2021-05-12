@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.incidentlocation.LocationActivity">
-
+    tools:context=".ui.updatelocation.UpdateCurrentLocationActivity">
     <LinearLayout
         android:id="@+id/use_current_location"
         android:layout_width="match_parent"
@@ -23,4 +22,5 @@
             android:text="Use current location" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
