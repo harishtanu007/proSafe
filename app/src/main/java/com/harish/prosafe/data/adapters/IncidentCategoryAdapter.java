@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,13 +59,13 @@ public class IncidentCategoryAdapter extends RecyclerView.Adapter<IncidentCatego
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView title, description;
-        private CardView incidentCategoryView;
+        private LinearLayout incidentCategoryView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            description = (TextView) itemView.findViewById(R.id.description);
-            incidentCategoryView=(CardView) itemView.findViewById(R.id.incident_category_view);
+            title = itemView.findViewById(R.id.title);
+            description = itemView.findViewById(R.id.description);
+            incidentCategoryView= itemView.findViewById(R.id.incident_category_view);
         }
 
     }

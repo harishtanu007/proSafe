@@ -2,10 +2,12 @@ package com.harish.prosafe.ui.updatelocation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,13 +17,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.harish.prosafe.R;
 import com.harish.prosafe.data.model.Coordinates;
 import com.harish.prosafe.ui.incidentlocation.FetchAddressService;
@@ -31,12 +39,14 @@ import com.harish.prosafe.util.Constants;
 import com.harish.prosafe.util.IBackendProvider;
 
 public class UpdateCurrentLocationActivity extends AppCompatActivity {
-    LinearLayout useCurrentLocation;
+    CardView useCurrentLocation;
     private static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     private ResultReceiver resultReceiver;
     double latitude, longitude;
     IBackendProvider backendProvider;
+    private ProgressDialog mProgressDialog;
+    private static final String TAG = "UpdateCurrentLocation";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +54,29 @@ public class UpdateCurrentLocationActivity extends AppCompatActivity {
         useCurrentLocation = findViewById(R.id.use_current_location);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
        resultReceiver = new AddressResultReceiver(new Handler());
-        useCurrentLocation.setOnClickListener(v -> getCurrentLocation());
+        useCurrentLocation.setOnClickListener(v -> {
+            getCurrentLocation();
+        });
         backendProvider=IBackendProvider.getBackendProvider();
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getName());
+                Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+
+        });
+
     }
 
     private void getCurrentLocation() {
@@ -56,6 +87,10 @@ public class UpdateCurrentLocationActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(UpdateCurrentLocationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
+            mProgressDialog = new ProgressDialog(UpdateCurrentLocationActivity.this);
+            mProgressDialog.setTitle("Fetching current location");
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.show();
             LocationServices.getFusedLocationProviderClient(UpdateCurrentLocationActivity.this)
                     .requestLocationUpdates(locationRequest, new LocationCallback() {
                         @Override
@@ -72,9 +107,9 @@ public class UpdateCurrentLocationActivity extends AppCompatActivity {
                                 location.setLongitude(longitude);
                                 fetchAddressfromLatLong(location);
                             } else {
-
+                                Toast.makeText(getApplicationContext(), "Failed to fetch current location", Toast.LENGTH_SHORT).show();
                             }
-
+                            mProgressDialog.dismiss();
                         }
                     }, Looper.getMainLooper());
         }
