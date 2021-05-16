@@ -31,8 +31,7 @@
             android:name=".ui.newincident.NewIncidentActivity"
             android:launchMode="singleInstance" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:launchMode="singleInstance" />
+            android:name=".ui.settings.SettingsActivity"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login"

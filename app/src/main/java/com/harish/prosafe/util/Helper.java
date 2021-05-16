@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.harish.prosafe.data.model.Coordinates;
 
 public class Helper  {
     static Helper helper;private static final int SECOND_MILLIS = 1000;
@@ -22,6 +23,40 @@ public class Helper  {
             helper= new Helper();
         return helper;
     }
+
+    public static double distance(Coordinates coordinates1, Coordinates coordinates2) {
+        double lat1=coordinates1.getLatitude();
+        double lat2 =coordinates2.getLatitude();
+        double lon1=coordinates1.getLongitude();
+        double lon2=coordinates2.getLongitude();
+        // The math module contains a function
+        // named toRadians which converts from
+        // degrees to radians.
+        lon1 = Math.toRadians(lon1);
+        lon2 = Math.toRadians(lon2);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        // Haversine formula
+        double dlon = lon2 - lon1;
+        double dlat = lat2 - lat1;
+        double a = Math.pow(Math.sin(dlat / 2), 2)
+                + Math.cos(lat1) * Math.cos(lat2)
+                * Math.pow(Math.sin(dlon / 2),2);
+
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in kilometers. Use 3956
+        // for miles and 6371 for Kms
+        double r = 3956;
+        // calculate the result
+        return(c * r);
+    }
+
+    public static String getDistanceUnit() {
+        return "mi";
+    }
+
     public boolean isInternetConnected(Context context)
     {
         ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

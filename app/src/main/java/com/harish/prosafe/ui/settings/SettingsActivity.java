@@ -76,6 +76,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             currentAddress= findPreference(getString(R.string.location_title));
             currentAddress.setTitle("Current Address");
+            currentAddress.setSelectable(false);
             backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
                 @Override
                 public void onSuccess(Coordinates coordinates) {

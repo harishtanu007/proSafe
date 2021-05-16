@@ -27,6 +27,7 @@ import com.harish.prosafe.util.Constants;
 import com.harish.prosafe.util.Helper;
 import com.harish.prosafe.util.IBackendProvider;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -60,7 +61,8 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
         backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
             @Override
             public void onSuccess(Coordinates userCurrentCoordinates) {
-                holder.distance.setText(String.valueOf(distance(ld.getCoordinates(),userCurrentCoordinates)));
+                DecimalFormat df = new DecimalFormat("###.#");
+                holder.distance.setText(df.format(Helper.distance(ld.getCoordinates(),userCurrentCoordinates))+Helper.getDistanceUnit());
             }
             @Override
             public void onFailed() {
@@ -86,30 +88,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
         popup.show();
     }
 
-    private double distance(Coordinates coordinates1,Coordinates coordinates2) {
-        double lat1=coordinates1.getLatitude();
-        double lat2 =coordinates2.getLatitude();
-        double lon1=coordinates1.getLongitude();
-        double lon2=coordinates2.getLongitude();
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1))
-                * Math.sin(deg2rad(lat2))
-                + Math.cos(deg2rad(lat1))
-                * Math.cos(deg2rad(lat2))
-                * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        return (dist);
-    }
 
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-
-    private double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
-    }
 
     @Override
     public int getItemCount() {
