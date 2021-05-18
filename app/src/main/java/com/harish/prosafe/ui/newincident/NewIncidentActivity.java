@@ -103,9 +103,9 @@ public class NewIncidentActivity extends AppCompatActivity {
             if (!title.isEmpty() && !description.isEmpty()) {
                 Log.e("title : ", title);
                 Log.e("description : ", description);
-                String user = backendProvider.getUserName();
+                String userId = backendProvider.getUserId();
                 long unixTime = System.currentTimeMillis() / 1000L;
-                Incident incident = new Incident(title, description, user, incidentCategory, unixTime, address, new Coordinates(latitude, longitude));
+                Incident incident = new Incident(title, description, userId, incidentCategory, unixTime, address, new Coordinates(latitude, longitude));
                 backendProvider.addIncident(incident).setEventListener(new EventListener() {
                     @Override
                     public void onSuccess() {
