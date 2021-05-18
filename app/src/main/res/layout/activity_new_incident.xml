@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,10 +8,18 @@
     tools:context=".ui.newincident.NewIncidentActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
 
         <EditText
             android:id="@+id/incident_title"
@@ -38,33 +46,36 @@
             android:inputType="textMultiLine"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />
+
         <LinearLayout
             android:id="@+id/location_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="36dp">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/location_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textStyle="bold"
                     android:text="Incident Location"
-                    android:padding="10dp"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="4dp"
                     android:text="address"
-                    android:padding="10dp"
-                    android:textSize="16sp"
-                     />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <ImageView
@@ -72,6 +83,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_baseline_navigate_next_24" />
         </LinearLayout>
+
         <Button
             android:id="@+id/share_incident"
             android:layout_width="match_parent"
@@ -85,4 +97,4 @@
             app:layout_constraintTop_toBottomOf="@+id/location_view"
             app:layout_constraintVertical_bias="0.0" />
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

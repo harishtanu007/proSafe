@@ -2,6 +2,7 @@ package com.harish.prosafe.ui.incidentlocation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -18,15 +19,27 @@ import android.os.ResultReceiver;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.harish.prosafe.R;
 import com.harish.prosafe.util.Constants;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class LocationActivity extends AppCompatActivity {
-    LinearLayout useCurrentLocation;
+    CardView useCurrentLocation;
     private static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     private ResultReceiver resultReceiver;
@@ -40,6 +53,37 @@ public class LocationActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         resultReceiver = new AddressResultReceiver(new Handler());
         useCurrentLocation.setOnClickListener(v -> getCurrentLocation());
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.google_places_api_key));
+        }
+
+// Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.ADDRESS,Place.Field.LAT_LNG));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
+                String address = place.getAddress();
+                LatLng location = place.getLatLng();
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(Constants.LOCATION_ADDRESS,address);
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Toast.makeText(getApplicationContext(),"An error occurred: " + status,Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
     }
 
@@ -105,7 +149,6 @@ public class LocationActivity extends AppCompatActivity {
             super.onReceiveResult(resultCode, resultData);
             if (resultCode == Constants.RESULT_SUCCESS) {
                 String address = resultData.getString(Constants.RESULT_DATA_KEY);
-                Toast.makeText(getApplicationContext(),address, Toast.LENGTH_SHORT).show();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra(Constants.LOCATION_ADDRESS,address);
                 returnIntent.putExtra(Constants.LOCATION_LATITUDE,latitude);
