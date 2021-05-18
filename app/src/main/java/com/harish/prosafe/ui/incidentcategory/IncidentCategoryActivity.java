@@ -18,6 +18,7 @@ public class IncidentCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_incident_category);
+        getSupportActionBar().setTitle("Choose a Category");
         backendProvider = IBackendProvider.getBackendProvider();
         recyclerView = findViewById(R.id.categories_rv);
         recyclerView.setHasFixedSize(true);

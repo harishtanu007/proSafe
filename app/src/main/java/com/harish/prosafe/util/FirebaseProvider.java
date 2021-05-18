@@ -62,6 +62,11 @@ public class FirebaseProvider implements IBackendProvider {
     }
 
     @Override
+    public String getUserId() {
+        return mAuth.getUid();
+    }
+
+    @Override
     public String getUserName() {
         return mAuth.getCurrentUser().getDisplayName();
     }
@@ -254,5 +259,7 @@ public class FirebaseProvider implements IBackendProvider {
     public Coordinates getUserCoordinates() {
         return null;
     }
+
+
 
 }

@@ -23,4 +23,6 @@ public interface IBackendProvider {
   FirebaseProvider getAddressValueEventListener(AddressValueChangeListener valueChangeListener);
   FirebaseProvider addAddressValueEventListener(Coordinates coordinates);
   Coordinates getUserCoordinates();
+
+  String getUserId();
 }

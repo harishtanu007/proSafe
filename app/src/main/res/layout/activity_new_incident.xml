@@ -42,7 +42,7 @@
             android:layout_marginTop="36dp"
             android:ems="10"
             android:gravity="start|top"
-            android:hint="Description"
+            android:hint="Incident Description"
             android:inputType="textMultiLine"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />

@@ -45,6 +45,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Neighbors Settings");
         backendProvider = IBackendProvider.getBackendProvider();
         resultReceiver = new AddressResultReceiver(new Handler());
         // load settings fragment
