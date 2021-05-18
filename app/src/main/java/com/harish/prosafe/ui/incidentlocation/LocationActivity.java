@@ -71,8 +71,13 @@ public class LocationActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
                 String address = place.getAddress();
                 LatLng location = place.getLatLng();
+                double latitude = location.latitude;
+                double longitude = location.longitude;
+                Toast.makeText(getApplicationContext(),location.latitude+""+location.longitude,Toast.LENGTH_SHORT).show();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra(Constants.LOCATION_ADDRESS,address);
+                returnIntent.putExtra(Constants.LOCATION_LATITUDE,latitude);
+                returnIntent.putExtra(Constants.LOCATION_LONGITUDE,longitude);
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
             }
