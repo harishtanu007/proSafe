@@ -2,10 +2,6 @@ package com.harish.prosafe.ui.newincident;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Address;
@@ -14,8 +10,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;

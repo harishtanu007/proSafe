@@ -6,8 +6,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.harish.prosafe.data.model.Coordinates;
 
 public class Helper  {

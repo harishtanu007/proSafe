@@ -22,13 +22,11 @@ import com.harish.prosafe.R;
 import com.harish.prosafe.data.adapters.AddressValueChangeListener;
 import com.harish.prosafe.data.model.Coordinates;
 import com.harish.prosafe.ui.incidentlocation.FetchAddressService;
-import com.harish.prosafe.ui.login.EventListener;
 import com.harish.prosafe.ui.myposts.MyPostsActivity;
 import com.harish.prosafe.ui.updatelocation.UpdateCurrentLocationActivity;
 import com.harish.prosafe.util.Constants;
 import com.harish.prosafe.util.IBackendProvider;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

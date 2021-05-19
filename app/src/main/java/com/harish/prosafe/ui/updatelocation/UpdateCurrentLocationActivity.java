@@ -6,7 +6,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,9 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
-import android.util.Log;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -27,16 +23,19 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.harish.prosafe.R;
 import com.harish.prosafe.data.model.Coordinates;
 import com.harish.prosafe.ui.incidentlocation.FetchAddressService;
-import com.harish.prosafe.ui.incidentlocation.LocationActivity;
 import com.harish.prosafe.ui.login.EventListener;
 import com.harish.prosafe.util.Constants;
 import com.harish.prosafe.util.IBackendProvider;
+
+import java.util.Arrays;
 
 public class UpdateCurrentLocationActivity extends AppCompatActivity {
     CardView useCurrentLocation;
@@ -54,27 +53,51 @@ public class UpdateCurrentLocationActivity extends AppCompatActivity {
         useCurrentLocation = findViewById(R.id.use_current_location);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
        resultReceiver = new AddressResultReceiver(new Handler());
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.google_places_api_key));
+        }
+
         useCurrentLocation.setOnClickListener(v -> {
             getCurrentLocation();
         });
         backendProvider=IBackendProvider.getBackendProvider();
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(com.google.android.libraries.places.api.model.Place.Field.ID, com.google.android.libraries.places.api.model.Place.Field.NAME, com.google.android.libraries.places.api.model.Place.Field.ADDRESS, com.google.android.libraries.places.api.model.Place.Field.LAT_LNG));
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName());
                 Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
+                String address = place.getAddress();
+                LatLng location = place.getLatLng();
+                double latitude = location.latitude;
+                double longitude = location.longitude;
+                Toast.makeText(getApplicationContext(),location.latitude+""+location.longitude,Toast.LENGTH_SHORT).show();
+                backendProvider.addAddressValueEventListener(new Coordinates(latitude,longitude)).setEventListener(new EventListener() {
+                    @Override
+                    public void onSuccess() {
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        Toast.makeText(getApplicationContext(), "Error while adding the location", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                finish();
             }
 
             @Override
             public void onError(Status status) {
-                Log.i(TAG, "An error occurred: " + status);
-            }
+                // TODO: Handle the error.
+                Toast.makeText(getApplicationContext(),"An error occurred: " + status,Toast.LENGTH_SHORT).show();
 
+            }
         });
 
     }

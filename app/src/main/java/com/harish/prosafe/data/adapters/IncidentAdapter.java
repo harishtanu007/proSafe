@@ -2,10 +2,6 @@ package com.harish.prosafe.data.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -28,10 +24,7 @@ import com.harish.prosafe.util.Helper;
 import com.harish.prosafe.util.IBackendProvider;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHolder> {
 
@@ -66,7 +59,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
             }
             @Override
             public void onFailed() {
-
+                Toast.makeText(context, "Error while adding the location", Toast.LENGTH_SHORT).show();
             }
         });
         holder.category.setText(ld.getIncidentCategory());

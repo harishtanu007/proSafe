@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/incident_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -9,68 +10,131 @@
     android:scrollbars="vertical"
     app:cardCornerRadius="8dp"
     app:cardElevation="10dp"
-    android:id="@+id/incident_view"
     app:cardPreventCornerOverlap="false">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/incident_category"
+        <LinearLayout
+            android:id="@+id/incident_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Incident type"
-            app:layout_constraintBottom_toTopOf="@id/title"
-            app:layout_constraintTop_toBottomOf="@id/posted_by" />
+            android:layout_margin="8dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/title"
+            <TextView
+                android:id="@+id/posted_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="user name"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageButton"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/ic_menu" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/background_dark" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Title"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/description"
-            app:layout_constraintTop_toBottomOf="@id/posted_by" />
+            android:layout_margin="8dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/description"
+            <LinearLayout
+                android:id="@+id/incident_sub_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/incident_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:text="Incident type"
+                    app:layout_constraintBottom_toTopOf="@id/title"
+                    app:layout_constraintTop_toBottomOf="@id/incident_header" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="8dp"
+                        android:src="@drawable/ic_location" />
+
+                    <TextView
+                        android:id="@+id/incident_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="8dp"
+                        android:text="location"
+                        app:layout_constraintBottom_toTopOf="@id/title"
+                        app:layout_constraintTop_toBottomOf="@id/incident_header" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:paddingRight="8dp"
+                android:text="Title"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/description"
+                app:layout_constraintTop_toBottomOf="@id/incident_category" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:minLines="0"
+                android:padding="8dp"
+                android:singleLine="false"
+                app:layout_constraintBottom_toTopOf="@id/time"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="time"
+                app:layout_constraintTop_toBottomOf="@id/description" />
+
+        </LinearLayout>
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Description"
-            app:layout_constraintBottom_toTopOf="@id/time"
-            app:layout_constraintTop_toBottomOf="@id/title" />
+            android:layout_height="match_parent"
+             />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/posted_by"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="user name"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toTopOf="@+id/title"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="time"
-            app:layout_constraintTop_toBottomOf="@id/description"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
