@@ -45,7 +45,7 @@ public class UpdateCurrentLocationActivity extends AppCompatActivity {
     double latitude, longitude;
     IBackendProvider backendProvider;
     private ProgressDialog mProgressDialog;
-    private static final String TAG = "UpdateCurrentLocation";
+    private static final String TAG = UpdateCurrentLocationActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +86,7 @@ public class UpdateCurrentLocationActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailed() {
-                        Toast.makeText(getApplicationContext(), "Error while adding the location", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.location_updation_error_message), Toast.LENGTH_SHORT).show();
                     }
                 });
                 finish();
@@ -95,7 +95,7 @@ public class UpdateCurrentLocationActivity extends AppCompatActivity {
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
-                Toast.makeText(getApplicationContext(),"An error occurred: " + status,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.current_location_error_message,Toast.LENGTH_SHORT).show();
 
             }
         });

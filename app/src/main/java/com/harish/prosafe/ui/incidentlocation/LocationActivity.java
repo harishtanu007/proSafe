@@ -81,7 +81,7 @@ public class LocationActivity extends AppCompatActivity {
             @Override
             public void onError(@NotNull Status status) {
                 // TODO: Handle the error.
-                Toast.makeText(getApplicationContext(),"An error occurred: " + status,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.current_location_error_message),Toast.LENGTH_SHORT).show();
 
             }
         });
