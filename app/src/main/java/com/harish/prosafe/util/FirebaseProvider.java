@@ -67,6 +67,32 @@ public class FirebaseProvider implements IBackendProvider {
     }
 
     @Override
+    public FirebaseProvider addMyIncidentValueEventListener(IncidentValueChangeListener incidentValueChangeListener) {
+        getIncidentDatabase().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                incidentListData.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot npsnapshot : snapshot.getChildren()) {
+                        Incident l = npsnapshot.getValue(Incident.class);
+                        if(l.getPostedBy().equals(getUserId()))
+                            incidentListData.add(l);
+                    }
+                    incidentAdapter = new IncidentAdapter(incidentListData);
+                    incidentValueChangeListener.onSuccess(incidentAdapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                incidentValueChangeListener.onFailed();
+            }
+        });
+
+        return getFirebaseProvider();
+    }
+
+    @Override
     public String getUserName() {
         return mAuth.getCurrentUser().getDisplayName();
     }

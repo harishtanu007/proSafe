@@ -51,7 +51,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
         Incident ld = listData.get(position);
         holder.title.setText(ld.getTitle());
         holder.description.setText(ld.getDescription());
-        holder.postedBy.setText(ld.getPostedBy());
+        holder.postedBy.setText("Neighbor");
         backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
             @SuppressLint("SetTextI18n")
             @Override
