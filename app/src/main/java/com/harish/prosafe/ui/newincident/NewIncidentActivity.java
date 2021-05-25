@@ -55,7 +55,7 @@ public class NewIncidentActivity extends AppCompatActivity {
         locationView = findViewById(R.id.location_view);
 
         backendProvider = IBackendProvider.getBackendProvider();
-        String incidentCategory = getIntent().getStringExtra("INCIDENT_CATEGORY");
+        String incidentCategory = getIntent().getStringExtra(getString(R.string.incident_category));
         getSupportActionBar().setTitle(incidentCategory);
 
         backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
@@ -65,12 +65,13 @@ public class NewIncidentActivity extends AppCompatActivity {
                 location.setLatitude(coordinates.getLatitude());
                 location.setLongitude(coordinates.getLongitude());
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                String errorMessage = "";
                 List<Address> addresses = null;
                 try {
                     addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                 }catch (Exception e){
-                    errorMessage = e.getMessage();
+                    String errorMessage = e.getMessage();
+                    Toast.makeText(getApplicationContext(),errorMessage,Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
                 if(addresses==null || addresses.isEmpty()){
                     Toast.makeText(getApplicationContext(),"Unable to get current location",Toast.LENGTH_SHORT).show();

@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.harish.prosafe.R;
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class IncidentCategoryAdapter extends RecyclerView.Adapter<IncidentCategoryAdapter.ViewHolder> {
 
-    private List<IncidentCategory> listData;
+    private final List<IncidentCategory> listData;
     private Context context;
 
     public IncidentCategoryAdapter(List<IncidentCategory> listData) {
@@ -55,11 +54,10 @@ public class IncidentCategoryAdapter extends RecyclerView.Adapter<IncidentCatego
         return listData.size();
     }
 
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title, description;
-        private LinearLayout incidentCategoryView;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView title;
+        private final TextView description;
+        private final LinearLayout incidentCategoryView;
 
         public ViewHolder(View itemView) {
             super(itemView);

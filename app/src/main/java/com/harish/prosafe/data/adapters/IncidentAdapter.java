@@ -1,5 +1,6 @@
 package com.harish.prosafe.data.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import java.util.List;
 
 public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHolder> {
 
-    private List<Incident> listData;
+    private final List<Incident> listData;
 
     public IncidentAdapter(List<Incident> listData) {
         this.listData = listData;
@@ -52,6 +53,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
         holder.description.setText(ld.getDescription());
         holder.postedBy.setText(ld.getPostedBy());
         backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(Coordinates userCurrentCoordinates) {
                 DecimalFormat df = new DecimalFormat("###.#");
@@ -88,10 +90,15 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
         return listData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title, description, postedBy, time, category,distance;
-        private CardView incidentView;
-        private ImageView options;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView title;
+        private final TextView description;
+        private final TextView postedBy;
+        private final TextView time;
+        private final TextView category;
+        private final TextView distance;
+        private final CardView incidentView;
+        private final ImageView options;
 
         public ViewHolder(View itemView) {
             super(itemView);

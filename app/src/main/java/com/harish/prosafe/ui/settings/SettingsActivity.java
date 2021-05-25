@@ -10,18 +10,16 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.harish.prosafe.R;
 import com.harish.prosafe.data.adapters.AddressValueChangeListener;
 import com.harish.prosafe.data.model.Coordinates;
-import com.harish.prosafe.ui.incidentlocation.FetchAddressService;
 import com.harish.prosafe.ui.myposts.MyPostsActivity;
 import com.harish.prosafe.ui.updatelocation.UpdateCurrentLocationActivity;
 import com.harish.prosafe.util.Constants;
@@ -38,14 +36,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     private static final String TAG = SettingsActivity.class.getSimpleName();
     IBackendProvider backendProvider;
-    private ResultReceiver resultReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Neighbors Settings");
+        getSupportActionBar().setTitle(R.string.neighbor_settings);
         backendProvider = IBackendProvider.getBackendProvider();
-        resultReceiver = new AddressResultReceiver(new Handler());
+
         // load settings fragment
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
     }
@@ -83,12 +81,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     location.setLatitude(coordinates.getLatitude());
                     location.setLongitude(coordinates.getLongitude());
                     Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                    String errorMessage = "";
+                    String errorMessage;
                     List<Address> addresses = null;
                     try {
                         addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
                     }catch (Exception e){
                         errorMessage = e.getMessage();
+                        Log.e(TAG,errorMessage);
                     }
                     if(addresses==null || addresses.isEmpty()){
                         Toast.makeText(getActivity(),"Unable to get current location",Toast.LENGTH_SHORT).show();
@@ -133,12 +132,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
     }
-    private void fetchAddressfromLatLong(Location location) {
-        Intent intent = new Intent(this, FetchAddressService.class);
-        intent.putExtra(Constants.RECEIVER, resultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
-        startService(intent);
-    }
+//    private void fetchAddressfromLatLong(Location location) {
+//        Intent intent = new Intent(this, FetchAddressService.class);
+//        intent.putExtra(Constants.RECEIVER, resultReceiver);
+//        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
+//        startService(intent);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -153,7 +152,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
-
+                Toast.makeText(getApplicationContext(), resultCode, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -194,6 +193,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     Build.VERSION.RELEASE + "\n App Version: " + body + "." + code + "\n Device Brand: " + Build.BRAND +
                     "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
         } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Unable to send email", Toast.LENGTH_SHORT).show();
         }
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("message/rfc822");
@@ -206,14 +207,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     public static String appVersion(Context context) throws PackageManager.NameNotFoundException {
         PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        String version = pInfo.versionName;
-        return version;
+        return pInfo.versionName;
     }
 
     public static int appBuild(Context context) throws PackageManager.NameNotFoundException {
         PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-        int build = pInfo.versionCode;
-        return build;
+        return pInfo.versionCode;
     }
 
 
@@ -227,23 +226,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private class AddressResultReceiver extends ResultReceiver {
 
-        AddressResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            super.onReceiveResult(resultCode, resultData);
-            if (resultCode == Constants.RESULT_SUCCESS) {
-                String address = resultData.getString(Constants.RESULT_DATA_KEY);
-
-
-            } else {
-                Toast.makeText(getApplicationContext(), resultData.getString(Constants.RESULT_DATA_KEY), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
 }

@@ -16,10 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -28,15 +25,14 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.harish.prosafe.R;
 import com.harish.prosafe.util.Constants;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
-import java.util.List;
 
 public class LocationActivity extends AppCompatActivity {
     CardView useCurrentLocation;
@@ -66,7 +62,7 @@ public class LocationActivity extends AppCompatActivity {
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(Place place) {
+            public void onPlaceSelected(@NotNull Place place) {
                 // TODO: Get info about the selected place.
                 Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
                 String address = place.getAddress();
@@ -83,7 +79,7 @@ public class LocationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(Status status) {
+            public void onError(@NotNull Status status) {
                 // TODO: Handle the error.
                 Toast.makeText(getApplicationContext(),"An error occurred: " + status,Toast.LENGTH_SHORT).show();
 
@@ -116,7 +112,7 @@ public class LocationActivity extends AppCompatActivity {
                                 location.setLongitude(longitude);
                                 fetchAddressfromLatLong(location);
                             } else {
-
+                                Toast.makeText(getApplicationContext(), "Cannot fetch the location", Toast.LENGTH_SHORT).show();
                             }
 
                         }

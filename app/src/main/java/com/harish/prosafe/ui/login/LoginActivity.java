@@ -5,25 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import com.google.android.material.snackbar.Snackbar;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import com.harish.prosafe.MainActivity;
 import com.harish.prosafe.R;
 import com.harish.prosafe.ui.registration.RegistrationActivity;
-import com.harish.prosafe.util.FirebaseProvider;
 import com.harish.prosafe.util.Helper;
 import com.harish.prosafe.util.IBackendProvider;
 
@@ -31,12 +22,10 @@ import com.harish.prosafe.util.IBackendProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.harish.prosafe.util.FirebaseProvider.getFirebaseProvider;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-    private FirebaseAuth mAuth;
 
     private ScrollView rootLayout;
 
@@ -61,14 +50,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         helper = Helper.getHelper();
         rootLayout = findViewById(R.id.rootlayout);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         backendProvider = IBackendProvider.getBackendProvider();
 
         if (currentUser == null) {
-
-            mAuth = FirebaseAuth.getInstance();
 
             ButterKnife.bind(this);
 

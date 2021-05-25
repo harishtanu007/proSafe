@@ -17,7 +17,6 @@ import com.harish.prosafe.data.adapters.IncidentValueChangeListener;
 import com.harish.prosafe.ui.login.LoginActivity;
 import com.harish.prosafe.util.IBackendProvider;
 
-import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
@@ -67,14 +66,5 @@ public class HomeFragment extends Fragment {
         startActivityForResult(intent, LOGIN_ACTIVITY_REQUEST_CODE);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // check that it is the SecondActivity with an OK result
-        if (requestCode == LOGIN_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) { // Activity.RESULT_OK
 
-            }
-        }
-    }
 }

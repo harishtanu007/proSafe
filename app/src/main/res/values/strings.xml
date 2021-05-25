@@ -37,4 +37,6 @@
     <string name="my_posts">my_posts</string>
     <string name="change_address">change_address</string>
     <string name="location_title">location_title</string>
+    <string name="neighbor_settings">Neighbors Settings</string>
+    <string name="incident_category">INCIDENT_CATEGORY</string>
 </resources>
