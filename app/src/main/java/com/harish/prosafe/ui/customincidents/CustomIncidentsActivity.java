@@ -41,6 +41,7 @@ import static com.harish.prosafe.util.Constants.LOCATION_ADDRESS;
 public class CustomIncidentsActivity extends AppCompatPreferenceActivity {
     private static final String TAG = SettingsActivity.class.getSimpleName();
     IBackendProvider backendProvider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +54,7 @@ public class CustomIncidentsActivity extends AppCompatPreferenceActivity {
     }
 
     public static class MainPreferenceFragment extends PreferenceFragment {
-        IBackendProvider backendProvider;
-        private Preference currentAddress;
+
 
         @Override
         public void onCreate(final Bundle savedInstanceState) {
@@ -64,7 +64,6 @@ public class CustomIncidentsActivity extends AppCompatPreferenceActivity {
 
 
     }
-
 
 
     @Override

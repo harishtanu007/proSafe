@@ -59,12 +59,7 @@ public class HomeFragment extends Fragment {
             openLoginPage();
         }
 
-        customizeIncidents.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), CustomIncidentsActivity.class));
-            }
-        });
+        customizeIncidents.setOnClickListener(v -> startActivity(new Intent(getContext(), CustomIncidentsActivity.class)));
         return root;
     }
 

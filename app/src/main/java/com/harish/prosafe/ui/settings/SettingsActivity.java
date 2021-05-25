@@ -71,7 +71,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 e.printStackTrace();
             }
 
-            currentAddress= findPreference(getString(R.string.location_title));
+            currentAddress = findPreference(getString(R.string.location_title));
             currentAddress.setTitle("Current Address");
             currentAddress.setSelectable(false);
             backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
@@ -84,20 +84,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     String errorMessage;
                     List<Address> addresses = null;
                     try {
-                        addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-                    }catch (Exception e){
+                        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    } catch (Exception e) {
                         errorMessage = e.getMessage();
-                        Log.e(TAG,errorMessage);
+                        Log.e(TAG, errorMessage);
                     }
-                    if(addresses==null || addresses.isEmpty()){
-                        Toast.makeText(getActivity(),"Unable to get current location",Toast.LENGTH_SHORT).show();
-                    }else {
+                    if (addresses == null || addresses.isEmpty()) {
+                        Toast.makeText(getActivity(), "Unable to get current location", Toast.LENGTH_SHORT).show();
+                    } else {
                         Address address = addresses.get(0);
                         ArrayList<String> addressFragments = new ArrayList<>();
                         for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                             addressFragments.add(address.getAddressLine(i));
                         }
-                        currentAddress.setSummary(TextUtils.join(Objects.requireNonNull(System.getProperty("line.separator")),addressFragments));
+                        currentAddress.setSummary(TextUtils.join(Objects.requireNonNull(System.getProperty("line.separator")), addressFragments));
                     }
 
                 }
