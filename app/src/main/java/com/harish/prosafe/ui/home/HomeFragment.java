@@ -36,26 +36,30 @@ public class HomeFragment extends Fragment {
         // To display the Recycler view linearly
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext()));
+        if(backendProvider!=null && backendProvider.getCurrentUser()!=null) {
+            backendProvider.addIncidentValueEventListener(new IncidentValueChangeListener() {
+                @Override
+                public void onSuccess(IncidentAdapter adapter) {
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
 
-        backendProvider.addIncidentValueEventListener(new IncidentValueChangeListener() {
-            @Override
-            public void onSuccess(IncidentAdapter adapter) {
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
+                @Override
+                public void onFailed() {
 
-            @Override
-            public void onFailed() {
-
-            }
-        });
+                }
+            });
+        }else
+        {
+            openLoginPage();
+        }
         return root;
     }
 
     @Override
     public void onStart() {
-        super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
+        super.onStart();
         if (backendProvider.getCurrentUser() == null) {
             openLoginPage();
         }
