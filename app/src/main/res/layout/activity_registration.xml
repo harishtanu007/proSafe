@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootlayout"
+    android:background="@color/colorPrimary"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:textColorHint="@color/white">
+            style="@style/TextLabel">
 
             <EditText
                 android:id="@+id/first_name"
@@ -46,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:textColorHint="@color/white">
+            style="@style/TextLabel">
 
             <EditText
                 android:id="@+id/last_name"
@@ -81,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:textColorHint="@color/white">
+            style="@style/TextLabel">
 
             <EditText
                 android:id="@+id/input_email"
@@ -99,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:textColorHint="@color/white">
+            style="@style/TextLabel">
 
             <EditText
                 android:id="@+id/input_mobile"
@@ -118,7 +119,7 @@
             android:layout_marginTop="8dp"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@android:color/white"
-            android:textColorHint="@color/white">
+            style="@style/TextLabel">
 
             <EditText
                 android:id="@+id/input_password"
@@ -137,7 +138,7 @@
             android:layout_marginTop="8dp"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@android:color/white"
-            android:textColorHint="@color/white">
+            style="@style/TextLabel">
 
             <EditText
                 android:id="@+id/input_reEnterPassword"
@@ -156,6 +157,7 @@
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
             android:padding="12dp"
+            android:background="@color/colorAccent"
             android:textColor="@color/white"
             android:text="Create Account" />
 
@@ -165,9 +167,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:text="Already a member? Login"
-            android:textSize="16dip" />
+            android:textSize="16dp" />
 
     </LinearLayout>
 </ScrollView>

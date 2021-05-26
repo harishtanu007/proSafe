@@ -34,12 +34,14 @@
         <activity android:name=".ui.incidentcategory.IncidentCategoryActivity" />
         <activity
             android:name=".ui.registration.RegistrationActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.ProSafe.NoActionBar"/>
         <activity android:name=".ui.newincident.NewIncidentActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login"
+            android:theme="@style/Theme.ProSafe.NoActionBar"
             android:launchMode="singleInstance" />
         <activity
             android:name=".MainActivity"

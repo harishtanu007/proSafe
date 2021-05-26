@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootlayout"
+    android:background="@color/colorPrimary"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -31,9 +32,10 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:textColorHint="@color/white">
+            android:layout_marginBottom="8dp"
+            style="@style/TextLabel"
+            >
 
             <EditText
                 android:id="@+id/input_email"
@@ -51,7 +53,7 @@
             android:layout_marginTop="8dp"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@android:color/white"
-            android:textColorHint="@color/white">
+            style="@style/TextLabel">
 
             <EditText
                 android:id="@+id/input_password"
@@ -70,6 +72,7 @@
             android:layout_marginTop="12dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:background="@color/colorAccent"
             android:text="Login"
             android:textColor="@android:color/white" />
 
@@ -83,7 +86,7 @@
             android:paddingRight="12dp"
             android:gravity="center"
             android:text="Forgot password?"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16dip" />
 
         <TextView
@@ -96,7 +99,7 @@
             android:paddingRight="12dp"
             android:gravity="center"
             android:text="No account yet? Create one"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16dip" />
 
 
