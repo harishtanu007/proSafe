@@ -39,6 +39,7 @@
     <string name="location_title">location_title</string>
     <string name="neighbor_settings">Neighbors Settings</string>
     <string name="incident_category">INCIDENT_CATEGORY</string>
+
     <string name="logout_confirmation">Are you sure you want to log out?</string>
     <string name="neighbor_label">Neighbor</string>
     <string name="location_error_message">Error while adding the location</string>
@@ -67,4 +68,22 @@
     <string name="email_feedback_subject">Feedback regarding Pro-Safe application</string>
     <string name="feedback_post_error">Unable to send email</string>
     <string name="location_updation_error_message">Error occured while updating the location. Please try again!</string>
+
+    <string name="title_activity_custom_incidents">CustomIncidentsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Advanced Filters</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
 </resources>

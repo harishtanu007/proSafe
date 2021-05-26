@@ -12,14 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProSafe">
+        <activity
+            android:name=".ui.customincidents.CustomIncidentsActivity"
+            android:label="@string/title_activity_custom_incidents"></activity>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity android:name=".ui.updatelocation.UpdateCurrentLocationActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+
+        <activity android:name=".ui.updatelocation.UpdateCurrentLocationActivity" />
+
         <activity android:name=".ui.settings.TestActivity" />
-        <activity
-            android:name=".ui.myposts.MyPostsActivity"
-             />
+        <activity android:name=".ui.myposts.MyPostsActivity" />
         <activity
             android:name=".ui.incidentlocation.LocationActivity"
             android:launchMode="singleInstance" />

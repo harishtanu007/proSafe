@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/messages_header">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_category_safety"
+            android:summary="General environmental awareness and potentially dangerous incidents"
+            android:title="Safety" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_category_lost_pet"
+            android:summary="General environmental awareness and potentially dangerous incidents"
+            android:title="Lost Pet" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_category_crime"
+            android:summary="General environmental awareness and potentially dangerous incidents"
+            android:title="Crime" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_category_unexpected_activity"
+            android:summary="General environmental awareness and potentially dangerous incidents"
+            android:title="Unexpected Activity" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="key_category_neighborly_moment"
+            android:summary="General environmental awareness and potentially dangerous incidents"
+            android:title="Neighborly Moment" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

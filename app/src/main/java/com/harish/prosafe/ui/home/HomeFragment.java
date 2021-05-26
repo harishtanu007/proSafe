@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.Toast;
+
+import android.widget.ImageView;
+
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.harish.prosafe.R;
 import com.harish.prosafe.data.adapters.IncidentAdapter;
 import com.harish.prosafe.data.adapters.IncidentValueChangeListener;
+import com.harish.prosafe.ui.customincidents.CustomIncidentsActivity;
 import com.harish.prosafe.ui.login.LoginActivity;
 import com.harish.prosafe.util.IBackendProvider;
 
@@ -22,9 +27,10 @@ import com.harish.prosafe.util.IBackendProvider;
 public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     IBackendProvider backendProvider;
-
+    ImageView customizeIncidents;
 
     private static final int LOGIN_ACTIVITY_REQUEST_CODE = 844;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +39,8 @@ public class HomeFragment extends Fragment {
         backendProvider = IBackendProvider.getBackendProvider();
         recyclerView = root.findViewById(R.id.incidents_rv);
         recyclerView.setHasFixedSize(true);
+
+        customizeIncidents = root.findViewById(R.id.customize_incidents);
 
         // To display the Recycler view linearly
         recyclerView.setLayoutManager(
@@ -54,6 +62,8 @@ public class HomeFragment extends Fragment {
         {
             openLoginPage();
         }
+
+        customizeIncidents.setOnClickListener(v -> startActivity(new Intent(getContext(), CustomIncidentsActivity.class)));
         return root;
     }
 
