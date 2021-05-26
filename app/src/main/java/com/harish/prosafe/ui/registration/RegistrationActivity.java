@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.harish.prosafe.R;
 import com.harish.prosafe.ui.login.LoginActivity;
 import com.harish.prosafe.ui.login.EventListener;
@@ -29,17 +30,28 @@ import butterknife.ButterKnife;
 
 public class RegistrationActivity extends AppCompatActivity {
     private static final String TAG = RegistrationActivity.class.getSimpleName();;
-
+    @BindView(R.id.first_name_text)
+    TextInputLayout _firstNameTextInputLayout;
     @BindView(R.id.first_name)
     EditText _firstNameText;
+    @BindView(R.id.last_name_text)
+    TextInputLayout _lastNameTextInputLayout;
     @BindView(R.id.last_name)
     EditText _lastNameText;
+    @BindView(R.id.input_email_text)
+    TextInputLayout _emailTextInputLayout;
     @BindView(R.id.input_email)
     EditText _emailText;
+    @BindView(R.id.input_mobile_text)
+    TextInputLayout _mobileTextInputLayout;
     @BindView(R.id.input_mobile)
     EditText _mobileText;
+    @BindView(R.id.input_password_text)
+    TextInputLayout _passwordTextInputLayout;
     @BindView(R.id.input_password)
     EditText _passwordText;
+    @BindView(R.id.input_reEnterPassword_text)
+    TextInputLayout _reEnterPasswordTextInputLayout;
     @BindView(R.id.input_reEnterPassword)
     EditText _reEnterPasswordText;
     @BindView(R.id.btn_signup)
@@ -153,28 +165,28 @@ public class RegistrationActivity extends AppCompatActivity {
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         if (firstName.isEmpty() || firstName.length() < 3) {
-            _firstNameText.setError(getString(R.string.firstname_validation_message));
+            _firstNameTextInputLayout.setError(getString(R.string.firstname_validation_message));
             valid = false;
         } else {
-            _firstNameText.setError(null);
+            _firstNameTextInputLayout.setError(null);
         }
         if (lastName.isEmpty() || lastName.length() < 3) {
-            _lastNameText.setError(getString(R.string.lastname_validation_message));
+            _lastNameTextInputLayout.setError(getString(R.string.lastname_validation_message));
             valid = false;
         } else {
-            _lastNameText.setError(null);
+            _lastNameTextInputLayout.setError(null);
         }
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError(getString(R.string.email_validation_message));
+            _emailTextInputLayout.setError(getString(R.string.email_validation_message));
             valid = false;
         } else {
-            _emailText.setError(null);
+            _emailTextInputLayout.setError(null);
         }
         if (!Patterns.PHONE.matcher(email).matches()) {
-            _mobileText.setError(getString(R.string.mobile_validation_message));
+            _mobileTextInputLayout.setError(getString(R.string.mobile_validation_message));
             valid = false;
         } else {
-            _mobileText.setError(null);
+            _mobileTextInputLayout.setError(null);
         }
 
 //        if (mobile.length() != 10) {
@@ -185,10 +197,10 @@ public class RegistrationActivity extends AppCompatActivity {
 //        }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError(getString(R.string.password_validation_message));
+            _passwordTextInputLayout.setError(getString(R.string.password_validation_message));
             valid = false;
         } else {
-            _passwordText.setError(null);
+            _passwordTextInputLayout.setError(null);
         }
 //        if (mobile.isEmpty() || mobile.length()!=10) {
 //            _mobileText.setError("contains 10 digits");
@@ -199,10 +211,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
-            _reEnterPasswordText.setError(getString(R.string.passwords_match_validation_message));
+            _reEnterPasswordTextInputLayout.setError(getString(R.string.passwords_match_validation_message));
             valid = false;
         } else {
-            _reEnterPasswordText.setError(null);
+            _reEnterPasswordTextInputLayout.setError(null);
         }
 
         return valid;
