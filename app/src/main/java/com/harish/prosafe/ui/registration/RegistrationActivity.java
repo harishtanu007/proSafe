@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RegistrationActivity extends AppCompatActivity {
-    private static final String TAG = "RegistrationActivity";
+    private static final String TAG = RegistrationActivity.class.getSimpleName();;
 
     @BindView(R.id.first_name)
     EditText _firstNameText;
@@ -59,10 +60,9 @@ public class RegistrationActivity extends AppCompatActivity {
         helper = Helper.getHelper();
         rootLayout = findViewById(R.id.rootlayout);
         backendProvider = IBackendProvider.getBackendProvider();
-        _signupButton.setOnClickListener(v->signup());
+        _signupButton.setOnClickListener(v -> signup());
         _loginLink.setOnClickListener(v -> login());
     }
-
 
 
 //    private void sendVerificationEmail() {
@@ -101,7 +101,7 @@ public class RegistrationActivity extends AppCompatActivity {
         mRegProgress = new ProgressDialog(RegistrationActivity.this);
         mRegProgress.setIndeterminate(true);
         mRegProgress.setCanceledOnTouchOutside(false);
-        mRegProgress.setMessage("Creating Account...");
+        mRegProgress.setMessage(getString(R.string.create_account_progress_message));
         mRegProgress.show();
 
         String firstName = _firstNameText.getText().toString();
@@ -112,10 +112,10 @@ public class RegistrationActivity extends AppCompatActivity {
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
-        backendProvider.registerUser(firstName, lastName, email, password, mobile,this).setEventListener(new EventListener() {
+        backendProvider.registerUser(firstName, lastName, email, password, mobile, this).setEventListener(new EventListener() {
             @Override
             public void onSuccess() {
-                Snackbar.make(rootLayout, "Account Created successfully", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(rootLayout, getString(R.string.account_creation_success_message), Snackbar.LENGTH_LONG).show();
                 mRegProgress.dismiss();
                 onSignupSuccess();
             }
@@ -123,7 +123,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onFailed() {
                 mRegProgress.dismiss();
-                Snackbar.make(rootLayout, "Account creation failed", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(rootLayout, getString(R.string.account_creation_failure_message), Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -139,7 +139,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     public void onSignupFailed() {
-        Snackbar.make(rootLayout, "Login failed", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(rootLayout, getString(R.string.login_failure_message), Snackbar.LENGTH_LONG).show();
     }
 
     public boolean validate() {
@@ -153,22 +153,28 @@ public class RegistrationActivity extends AppCompatActivity {
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         if (firstName.isEmpty() || firstName.length() < 3) {
-            _firstNameText.setError("at least 3 characters");
+            _firstNameText.setError(getString(R.string.firstname_validation_message));
             valid = false;
         } else {
             _firstNameText.setError(null);
         }
         if (lastName.isEmpty() || lastName.length() < 3) {
-            _lastNameText.setError("at least 3 characters");
+            _lastNameText.setError(getString(R.string.lastname_validation_message));
             valid = false;
         } else {
             _lastNameText.setError(null);
         }
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            _emailText.setError(getString(R.string.email_validation_message));
             valid = false;
         } else {
             _emailText.setError(null);
+        }
+        if (!Patterns.PHONE.matcher(email).matches()) {
+            _mobileText.setError(getString(R.string.mobile_validation_message));
+            valid = false;
+        } else {
+            _mobileText.setError(null);
         }
 
 //        if (mobile.length() != 10) {
@@ -179,7 +185,7 @@ public class RegistrationActivity extends AppCompatActivity {
 //        }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            _passwordText.setError(getString(R.string.password_validation_message));
             valid = false;
         } else {
             _passwordText.setError(null);
@@ -193,7 +199,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
         if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
-            _reEnterPasswordText.setError("Password Do not match");
+            _reEnterPasswordText.setError(getString(R.string.passwords_match_validation_message));
             valid = false;
         } else {
             _reEnterPasswordText.setError(null);

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.harish.prosafe.R;
 import com.harish.prosafe.data.adapters.IncidentCategoryAdapter;
@@ -35,7 +36,7 @@ public class IncidentCategoryActivity extends AppCompatActivity {
             }
             @Override
             public void onFailed() {
-
+                Toast.makeText(getApplicationContext(),getString(R.string.incident_category_fetch_error_message), Toast.LENGTH_SHORT).show();
             }
         });
     }

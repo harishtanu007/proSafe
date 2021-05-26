@@ -54,7 +54,7 @@ public class GalleryFragment extends Fragment {
                     builder = new AlertDialog.Builder(getContext());
                 }
                 builder
-                        .setMessage("Are you sure you want to Log out?")
+                        .setMessage(getString(R.string.logout_confirmation))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with logout

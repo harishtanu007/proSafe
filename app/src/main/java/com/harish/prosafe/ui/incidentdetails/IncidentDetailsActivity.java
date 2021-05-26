@@ -1,6 +1,9 @@
 package com.harish.prosafe.ui.incidentdetails;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,20 +23,22 @@ import com.harish.prosafe.util.Helper;
 import com.harish.prosafe.util.IBackendProvider;
 
 import java.text.DecimalFormat;
+import java.util.stream.Stream;
 
-public class IncidentDetailsActivity extends AppCompatActivity{
+public class IncidentDetailsActivity extends AppCompatActivity {
 
     private TextView title, description, postedBy, time, category, distance;
     private GoogleMap mMap;
     IBackendProvider backendProvider;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String incidentCategory = "", incidentPostedBy = "", incidentDescription = "", incidentTitle = "";
         long incidentTime = 0;
         setContentView(R.layout.activity_incident_details);
-        backendProvider =IBackendProvider.getBackendProvider();
+        backendProvider = IBackendProvider.getBackendProvider();
         Incident incident = (Incident) getIntent().getSerializableExtra(Constants.INCIDENT_DATA_EXTRA);
         incidentCategory = incident.getIncidentCategory();
         incidentPostedBy = incident.getPostedBy();
@@ -53,15 +58,18 @@ public class IncidentDetailsActivity extends AppCompatActivity{
         postedBy.setText(incidentPostedBy);
         category.setText(incidentCategory);
         time.setText(Helper.getTimeAgo(incidentTime));
+
+
         backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
             @Override
             public void onSuccess(Coordinates userCurrentCoordinates) {
                 DecimalFormat df = new DecimalFormat("###.#");
-                distance.setText(df.format(Helper.distance(incident.getCoordinates(),userCurrentCoordinates))+Helper.getDistanceUnit());
+                distance.setText(df.format(Helper.distance(incident.getCoordinates(), userCurrentCoordinates)) + Helper.getDistanceUnit());
             }
+
             @Override
             public void onFailed() {
-                Toast.makeText(getApplicationContext(), "Error while adding the location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.location_error_message, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -71,7 +79,7 @@ public class IncidentDetailsActivity extends AppCompatActivity{
             LatLng incidentLocation = new LatLng(incident.getCoordinates().getLatitude(), incident.getCoordinates().getLongitude());
             googleMap.addMarker(new MarkerOptions()
                     .position(incidentLocation)
-                    .title("Marker in Sydney"));
+                    .title(getString(R.string.default_marker_name)));
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(incidentLocation)      // Sets the center of the map to Mountain View
                     .zoom(17)                   // Sets the zoom

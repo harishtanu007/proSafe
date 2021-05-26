@@ -74,7 +74,7 @@ public class NewIncidentActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if(addresses==null || addresses.isEmpty()){
-                    Toast.makeText(getApplicationContext(),"Unable to get current location",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.current_location_error_message),Toast.LENGTH_SHORT).show();
                 }else {
                     Address address = addresses.get(0);
                     ArrayList<String> addressFragments = new ArrayList<>();
@@ -104,13 +104,13 @@ public class NewIncidentActivity extends AppCompatActivity {
                 backendProvider.addIncident(incident).setEventListener(new EventListener() {
                     @Override
                     public void onSuccess() {
-                        Snackbar.make(rootLayout, "Incident Shared Successfully", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(rootLayout, getString(R.string.incident_post_success_message), Snackbar.LENGTH_LONG).show();
                         finish();
                     }
 
                     @Override
                     public void onFailed() {
-                        Snackbar.make(rootLayout, "Something went wrong!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(rootLayout, getString(R.string.incident_post_failure_message), Snackbar.LENGTH_LONG).show();
                     }
                 });
             }

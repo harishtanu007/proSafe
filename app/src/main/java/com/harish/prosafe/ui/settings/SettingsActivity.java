@@ -77,7 +77,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
                 @Override
                 public void onSuccess(Coordinates coordinates) {
-                    Location location = new Location("providerNA");
+                    Location location = new Location(getString(R.string.no_provider_label));
                     location.setLatitude(coordinates.getLatitude());
                     location.setLongitude(coordinates.getLongitude());
                     Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
@@ -89,9 +89,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         errorMessage = e.getMessage();
                         Log.e(TAG, errorMessage);
                     }
-                    if (addresses == null || addresses.isEmpty()) {
-                        Toast.makeText(getActivity(), "Unable to get current location", Toast.LENGTH_SHORT).show();
-                    } else {
+
+                    if(addresses==null || addresses.isEmpty()){
+                        Toast.makeText(getActivity(),R.string.current_location_error_message,Toast.LENGTH_SHORT).show();
+                    }else {
+
+                    
                         Address address = addresses.get(0);
                         ArrayList<String> addressFragments = new ArrayList<>();
                         for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
@@ -104,6 +107,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 @Override
                 public void onFailed() {
+                    Toast.makeText(getActivity(),R.string.current_location_error_message,Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -194,12 +198,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     "\n Device Model: " + Build.MODEL + "\n Device Manufacturer: " + Build.MANUFACTURER;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(context, "Unable to send email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,context.getString(R.string.feedback_post_error), Toast.LENGTH_SHORT).show();
         }
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"harishtanu007@gmail.com"});
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Query from Ping Me app");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getString(R.string.feedback_default_email_id)});
+        intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.email_feedback_subject));
         intent.putExtra(Intent.EXTRA_TEXT, body);
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose_email_client)));
     }

@@ -51,7 +51,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
         Incident ld = listData.get(position);
         holder.title.setText(ld.getTitle());
         holder.description.setText(ld.getDescription());
-        holder.postedBy.setText("Neighbor");
+        holder.postedBy.setText(R.string.neighbor_label);
         backendProvider.getAddressValueEventListener(new AddressValueChangeListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -61,7 +61,7 @@ public class IncidentAdapter extends RecyclerView.Adapter<IncidentAdapter.ViewHo
             }
             @Override
             public void onFailed() {
-                Toast.makeText(context, "Error while adding the location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.location_error_message), Toast.LENGTH_SHORT).show();
             }
         });
         holder.category.setText(ld.getIncidentCategory());

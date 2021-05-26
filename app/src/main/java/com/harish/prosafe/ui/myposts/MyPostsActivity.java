@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.harish.prosafe.R;
 import com.harish.prosafe.data.adapters.IncidentAdapter;
@@ -40,7 +41,7 @@ public class MyPostsActivity extends AppCompatActivity {
 
             @Override
             public void onFailed() {
-
+                Toast.makeText(getApplicationContext(),getString(R.string.posts_fetch_error_message), Toast.LENGTH_SHORT).show();
             }
         });
     }

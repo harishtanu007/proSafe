@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int REQUEST_SIGNUP = 0;
 
     private ScrollView rootLayout;
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (helper.isInternetConnected(getApplicationContext())) {
                         login();
                     } else {
-                        Snackbar.make(rootLayout, "No Internet Connection!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(rootLayout,getString(R.string.internet_connection_error_message), Snackbar.LENGTH_LONG).show();
                     }
                 });
             _signupLink.setOnClickListener(v ->   startActivityForResult(new Intent(getApplicationContext(), RegistrationActivity.class), REQUEST_SIGNUP));
@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage(getString(R.string.authentication_progress_message));
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString().trim();
 
         // TODO: Implement your own authentication logic here.
-        if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
             backendProvider.loginUser(email, password,this).setEventListener(new EventListener() {
                 @Override
                 public void onSuccess() {
@@ -104,12 +104,16 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+        else{
+
+
+        }
 
     }
 
 
     public void onLoginFailed() {
-        Snackbar.make(rootLayout, "Login failed", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(rootLayout, getString(R.string.login_fail_error_message), Snackbar.LENGTH_LONG).show();
     }
 
     @Override

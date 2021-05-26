@@ -39,6 +39,36 @@
     <string name="location_title">location_title</string>
     <string name="neighbor_settings">Neighbors Settings</string>
     <string name="incident_category">INCIDENT_CATEGORY</string>
+
+    <string name="logout_confirmation">Are you sure you want to log out?</string>
+    <string name="neighbor_label">Neighbor</string>
+    <string name="location_error_message">Error while adding the location</string>
+    <string name="incident_fetch_error_message">Unable to show incidents. Please try again!</string>
+    <string name="internet_connection_error_message">No Internet Connection!Please try again!</string>
+    <string name="login_fail_error_message">Login failed</string>
+    <string name="authentication_progress_message">Authenticating...</string>
+    <string name="create_account_progress_message">Creating Account...</string>
+    <string name="account_creation_success_message">Account Created successfully</string>
+    <string name="account_creation_failure_message">Account creation failed</string>
+    <string name="login_failure_message">Login failed!Please try again</string>
+    <string name="firstname_validation_message">First name must not be empty and be at least three characters in length</string>
+    <string name="lastname_validation_message">Last name must not be empty and be at least three characters in length</string>
+    <string name="email_validation_message">Enter a valid email address</string>
+    <string name="password_validation_message">password must be between 4 and 10 alphanumeric characters</string>
+    <string name="passwords_match_validation_message">Passwords do not match</string>
+    <string name="incident_category_fetch_error_message">Unable to show incident category information. Please try again!</string>
+    <string name="mobile_validation_message">Enter a valid phone number</string>
+    <string name="current_location_error_message">Unable to get current location</string>
+    <string name="incident_post_success_message">Incident Shared Successfully</string>
+    <string name="incident_post_failure_message">Something went wrong!</string>
+    <string name="default_marker_name">Marker in Sydney</string>
+    <string name="posts_fetch_error_message">Unable to show posts information. Please try again!</string>
+    <string name="no_provider_label">providerNA</string>
+    <string name="feedback_default_email_id">harishtanu007@gmail.com</string>
+    <string name="email_feedback_subject">Feedback regarding Pro-Safe application</string>
+    <string name="feedback_post_error">Unable to send email</string>
+    <string name="location_updation_error_message">Error occured while updating the location. Please try again!</string>
+
     <string name="title_activity_custom_incidents">CustomIncidentsActivity</string>
 
     <!-- Preference Titles -->
@@ -55,4 +85,5 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
 </resources>

@@ -22,7 +22,7 @@ public class FetchAddressService extends IntentService {
     private ResultReceiver resultReceiver;
 
     public FetchAddressService(){
-        super("FetchAddressService");
+        super("");
     }
 
     @Override

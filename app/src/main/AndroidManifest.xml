@@ -24,6 +24,7 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity android:name=".ui.updatelocation.UpdateCurrentLocationActivity" />
+
         <activity android:name=".ui.settings.TestActivity" />
         <activity android:name=".ui.myposts.MyPostsActivity" />
         <activity
