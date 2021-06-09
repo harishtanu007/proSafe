@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RegistrationActivity extends AppCompatActivity {
-    private static final String TAG = RegistrationActivity.class.getSimpleName();;
+    private static final String TAG = RegistrationActivity.class.getSimpleName();
     @BindView(R.id.first_name_text)
     TextInputLayout _firstNameTextInputLayout;
     @BindView(R.id.first_name)

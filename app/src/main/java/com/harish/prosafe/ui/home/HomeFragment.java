@@ -2,10 +2,12 @@ package com.harish.prosafe.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import com.harish.prosafe.data.adapters.IncidentAdapter;
 import com.harish.prosafe.data.adapters.IncidentValueChangeListener;
 import com.harish.prosafe.ui.customincidents.CustomIncidentsActivity;
 import com.harish.prosafe.ui.login.LoginActivity;
+import com.harish.prosafe.ui.registration.RegistrationActivity;
 import com.harish.prosafe.util.IBackendProvider;
 
 
@@ -28,9 +31,10 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView;
     IBackendProvider backendProvider;
     ImageView customizeIncidents;
+    LinearLayout noIncidentsLayout;
 
     private static final int LOGIN_ACTIVITY_REQUEST_CODE = 844;
-
+    private static final String TAG = HomeFragment.class.getSimpleName();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         customizeIncidents = root.findViewById(R.id.customize_incidents);
+        noIncidentsLayout = root.findViewById(R.id.no_incidents_layout);
 
         // To display the Recycler view linearly
         recyclerView.setLayoutManager(
@@ -49,8 +54,16 @@ public class HomeFragment extends Fragment {
             backendProvider.addIncidentValueEventListener(new IncidentValueChangeListener() {
                 @Override
                 public void onSuccess(IncidentAdapter adapter) {
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+                    Log.e(TAG,  "Item count" + adapter.getItemCount());
+                    if(adapter.getItemCount()>0){
+
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        noIncidentsLayout.setVisibility(View.GONE);
+                    }
+                    else {
+                        noIncidentsLayout.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
